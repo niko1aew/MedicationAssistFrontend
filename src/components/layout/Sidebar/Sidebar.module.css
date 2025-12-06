@@ -1,0 +1,129 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-fixed);
+  
+  animation: fadeIn var(--transition-fast);
+}
+
+@media (min-width: 1024px) {
+  .overlay {
+    display: none;
+  }
+}
+
+.sidebar {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  
+  background-color: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+  z-index: calc(var(--z-fixed) + 1);
+  
+  transform: translateX(-100%);
+  transition: transform var(--transition-normal);
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+}
+
+.nav {
+  flex: 1;
+  padding: var(--spacing-md);
+  overflow-y: auto;
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-md);
+  
+  transition: all var(--transition-fast);
+}
+
+.navLink:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.navLink.active {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.navLink.active .icon {
+  color: var(--color-primary);
+}
+
+.icon {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: var(--font-size-md);
+}
+
+.footer {
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--border-color);
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+  padding: var(--spacing-md);
+  
+  background: transparent;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  
+  color: var(--color-danger);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  
+  transition: all var(--transition-fast);
+}
+
+.logoutButton:hover {
+  background-color: var(--color-danger-light);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+

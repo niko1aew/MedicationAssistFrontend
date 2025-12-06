@@ -1,0 +1,2 @@
+export { IntakeFilter } from './IntakeFilter';
+

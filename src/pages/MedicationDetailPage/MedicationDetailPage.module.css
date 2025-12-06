@@ -1,0 +1,146 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  padding: var(--spacing-sm);
+  margin: calc(var(--spacing-sm) * -1);
+  border-radius: var(--border-radius-md);
+  
+  transition: all var(--transition-fast);
+}
+
+.backButton:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+}
+
+.mainCard {
+  padding: 0;
+}
+
+.medicationHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, #a7f3d0 100%);
+}
+
+.medicationIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  
+  background-color: white;
+  color: var(--color-primary-dark);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.medicationInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.medicationName {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-dark);
+  margin: 0;
+}
+
+.dosage {
+  font-size: var(--font-size-md);
+  color: var(--color-primary-dark);
+  opacity: 0.8;
+  margin: var(--spacing-xs) 0 0;
+}
+
+.description {
+  padding: var(--spacing-lg);
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.meta {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+}
+
+.secondaryActions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.secondaryActions button {
+  flex: 1;
+}
+
+.historySection {
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-md);
+}
+
+.emptyHistory {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+  padding: var(--spacing-lg) 0;
+}
+
+.intakesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+@media (max-width: 640px) {
+  .secondaryActions {
+    flex-direction: column;
+  }
+}
+

@@ -1,0 +1,2 @@
+export { IntakesPage } from './IntakesPage';
+

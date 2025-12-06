@@ -1,0 +1,28 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .actions {
+    flex-direction: column-reverse;
+  }
+  
+  .actions button {
+    width: 100%;
+  }
+}
+

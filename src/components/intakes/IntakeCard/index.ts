@@ -1,0 +1,2 @@
+export { IntakeCard } from './IntakeCard';
+

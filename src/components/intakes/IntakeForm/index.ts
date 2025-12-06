@@ -1,0 +1,2 @@
+export { IntakeForm } from './IntakeForm';
+

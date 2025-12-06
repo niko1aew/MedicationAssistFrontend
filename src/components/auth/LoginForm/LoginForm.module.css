@@ -1,0 +1,45 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+}
+
+.error {
+  padding: var(--spacing-md);
+  background-color: var(--color-danger-light);
+  color: #991b1b;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.link {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
