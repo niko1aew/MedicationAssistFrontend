@@ -17,6 +17,21 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  build: {
+    // Disable source maps in production
+    sourcemap: false,
+    // Optimize chunk size
+    chunkSizeWarningLimit: 500,
+    rollupOptions: {
+      output: {
+        // Manual chunk splitting for better caching
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          mobx: ['mobx', 'mobx-react-lite'],
+        }
+      }
+    }
   }
 })
 
