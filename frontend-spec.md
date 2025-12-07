@@ -29,8 +29,8 @@
 ## 2. Базовый URL API
 
 ```
-Development: http://localhost:5000/api
-Production: настраивается через переменные окружения
+Development: http://localhost:5018/api
+Production: настраивается через переменные окружения (VITE_API_URL)
 ```
 
 ---
@@ -88,9 +88,9 @@ src/
 │   │   └── ...
 │   │
 │   ├── layout/             # Компоненты разметки
+│   │   ├── AuthLayout/
 │   │   ├── Header/
 │   │   ├── Sidebar/
-│   │   ├── Footer/
 │   │   └── MainLayout/
 │   │
 │   ├── auth/               # Компоненты аутентификации
@@ -101,8 +101,7 @@ src/
 │   ├── medications/        # Компоненты лекарств
 │   │   ├── MedicationList/
 │   │   ├── MedicationCard/
-│   │   ├── MedicationForm/
-│   │   └── MedicationDetail/
+│   │   └── MedicationForm/
 │   │
 │   ├── intakes/            # Компоненты приемов
 │   │   ├── IntakeList/
@@ -128,8 +127,7 @@ src/
 │
 ├── hooks/                  # Кастомные хуки
 │   ├── useAuth.ts
-│   ├── useStores.ts
-│   └── useForm.ts
+│   └── useStores.ts
 │
 ├── types/                  # TypeScript типы
 │   ├── user.types.ts
@@ -148,7 +146,7 @@ src/
 │   └── global.css          # Глобальные стили
 │
 ├── App.tsx                 # Корневой компонент
-├── index.tsx               # Точка входа
+├── main.tsx                # Точка входа
 └── routes.tsx              # Конфигурация маршрутов
 ```
 
@@ -285,7 +283,7 @@ export interface ApiResponse<T> {
 
 import axios, { AxiosError, AxiosInstance } from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5018/api';
 
 const client: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -310,6 +308,7 @@ client.interceptors.response.use(
     if (error.response?.status === 401) {
       // Токен истек или невалидный
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -2023,18 +2022,26 @@ const MedicationsPage = React.lazy(() => import('./pages/MedicationsPage'));
 
 ## 20. Переменные окружения
 
+Создайте файл `.env` на основе `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
 ```env
 # .env.example
 
-# API URL
-REACT_APP_API_URL=http://localhost:5000/api
+# API URL (используется при сборке)
+VITE_API_URL=http://localhost:5018/api
 
-# Название приложения
-REACT_APP_NAME=MedicationAssist
-
-# Режим разработки
-REACT_APP_DEBUG=true
+# Порт frontend (для Docker)
+FRONTEND_PORT=3000
 ```
+
+| Переменная | Описание | По умолчанию |
+|------------|----------|--------------|
+| `VITE_API_URL` | URL API (build-time) | `http://localhost:5018/api` |
+| `FRONTEND_PORT` | Порт frontend (Docker) | `3000` |
 
 ---
 
@@ -2044,32 +2051,42 @@ REACT_APP_DEBUG=true
 
 ```bash
 npm install
-# или
-yarn install
 ```
 
 ### 21.2 Разработка
 
 ```bash
-npm start
-# или
-yarn start
+npm run dev
 ```
+
+Приложение будет доступно на http://localhost:3000
 
 ### 21.3 Сборка
 
 ```bash
 npm run build
-# или
-yarn build
 ```
 
-### 21.4 Тесты
+### 21.4 Предпросмотр сборки
 
 ```bash
-npm test
-# или
-yarn test
+npm run preview
+```
+
+### 21.5 Docker
+
+```bash
+# Создать .env файл
+cp .env.example .env
+
+# Сборка и запуск
+docker-compose up -d --build
+
+# Просмотр логов
+docker-compose logs -f frontend
+
+# Остановка
+docker-compose down
 ```
 
 ---
@@ -2079,28 +2096,35 @@ yarn test
 ```json
 {
   "name": "medication-assist-frontend",
-  "version": "1.0.0",
   "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.20.0",
+    "axios": "^1.6.2",
     "mobx": "^6.12.0",
     "mobx-react-lite": "^4.0.5",
-    "axios": "^1.6.2",
-    "typescript": "^5.3.2"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.20.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.42",
-    "@types/react-dom": "^18.2.17",
-    "@testing-library/react": "^14.1.2",
-    "@testing-library/jest-dom": "^6.1.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "@eslint/js": "^9.13.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "eslint": "^9.13.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.11.0",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.11.0",
+    "vite": "^5.4.10"
   }
 }
 ```
@@ -2149,7 +2173,7 @@ yarn test
 ## 24. Контакты и поддержка
 
 При возникновении вопросов по спецификации API обращайтесь к документации:
-- **Swagger UI**: `http://localhost:5000/swagger` (Development)
+- **Swagger UI**: `http://localhost:5018/swagger` (Development)
 - **Backend спецификация**: `spec.md`
 
 ---
