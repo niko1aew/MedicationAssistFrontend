@@ -9,6 +9,7 @@ import type { RootStore } from './RootStore';
 export class AuthStore {
   rootStore: RootStore;
   user: User | null = null;
+  token: string | null = null;  // Observable поле для отслеживания авторизации
   isLoading: boolean = false;
   error: string | null = null;
   isInitialized: boolean = false;
@@ -20,7 +21,7 @@ export class AuthStore {
   }
 
   get isAuthenticated(): boolean {
-    return !!tokenStorage.getAccessToken() && !!this.user;
+    return !!this.token && !!this.user;
   }
 
   get userId(): string | null {
@@ -36,6 +37,7 @@ export class AuthStore {
     const user = tokenStorage.getUser();
     
     if (token && user) {
+      this.token = token;
       this.user = user;
     } else {
       this.clearAuth();
@@ -54,11 +56,14 @@ export class AuthStore {
       tokenStorage.setTokenExpires(response.tokenExpires);
     }
     
+    // Обновляем observable поля
+    this.token = response.token;
     this.user = response.user;
   }
 
   private clearAuth() {
     tokenStorage.clearAll();
+    this.token = null;
     this.user = null;
   }
 
