@@ -1,12 +1,14 @@
+// stores/AuthStore.ts
+
 import { makeAutoObservable, runInAction } from 'mobx';
 import { authApi } from '../api/auth.api';
-import { User, RegisterDto, LoginDto } from '../types/user.types';
+import { User, RegisterDto, LoginDto, AuthResponse } from '../types/user.types';
+import { tokenStorage } from '../utils/tokenStorage';
 import type { RootStore } from './RootStore';
 
 export class AuthStore {
   rootStore: RootStore;
   user: User | null = null;
-  token: string | null = null;
   isLoading: boolean = false;
   error: string | null = null;
   isInitialized: boolean = false;
@@ -18,40 +20,51 @@ export class AuthStore {
   }
 
   get isAuthenticated(): boolean {
-    return !!this.token && !!this.user;
+    return !!tokenStorage.getAccessToken() && !!this.user;
   }
 
   get userId(): string | null {
     return this.user?.id || null;
   }
 
+  get hasRefreshToken(): boolean {
+    return tokenStorage.hasRefreshToken();
+  }
+
   private initFromStorage() {
-    const token = localStorage.getItem('token');
-    const userJson = localStorage.getItem('user');
+    const token = tokenStorage.getAccessToken();
+    const user = tokenStorage.getUser();
     
-    if (token && userJson) {
-      try {
-        this.token = token;
-        this.user = JSON.parse(userJson);
-      } catch {
-        this.clearAuth();
-      }
+    if (token && user) {
+      this.user = user;
+    } else {
+      this.clearAuth();
     }
     this.isInitialized = true;
   }
 
-  private saveToStorage(token: string, user: User) {
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
+  private saveAuthData(response: AuthResponse) {
+    tokenStorage.setAccessToken(response.token);
+    tokenStorage.setUser(response.user);
+    
+    if (response.refreshToken) {
+      tokenStorage.setRefreshToken(response.refreshToken);
+    }
+    if (response.tokenExpires) {
+      tokenStorage.setTokenExpires(response.tokenExpires);
+    }
+    
+    this.user = response.user;
   }
 
   private clearAuth() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.token = null;
+    tokenStorage.clearAll();
     this.user = null;
   }
 
+  /**
+   * Регистрация нового пользователя
+   */
   async register(data: RegisterDto): Promise<boolean> {
     this.isLoading = true;
     this.error = null;
@@ -59,9 +72,7 @@ export class AuthStore {
     try {
       const response = await authApi.register(data);
       runInAction(() => {
-        this.token = response.data.token;
-        this.user = response.data.user;
-        this.saveToStorage(response.data.token, response.data.user);
+        this.saveAuthData(response.data);
         this.isLoading = false;
       });
       return true;
@@ -75,6 +86,9 @@ export class AuthStore {
     }
   }
 
+  /**
+   * Вход в систему
+   */
   async login(data: LoginDto): Promise<boolean> {
     this.isLoading = true;
     this.error = null;
@@ -82,9 +96,7 @@ export class AuthStore {
     try {
       const response = await authApi.login(data);
       runInAction(() => {
-        this.token = response.data.token;
-        this.user = response.data.user;
-        this.saveToStorage(response.data.token, response.data.user);
+        this.saveAuthData(response.data);
         this.isLoading = false;
       });
       return true;
@@ -98,20 +110,86 @@ export class AuthStore {
     }
   }
 
-  logout() {
+  /**
+   * Выход из системы (текущее устройство)
+   */
+  async logout(): Promise<void> {
+    const refreshToken = tokenStorage.getRefreshToken();
+    
+    // Пытаемся отозвать токен на сервере
+    if (refreshToken) {
+      try {
+        await authApi.revoke({ refreshToken });
+      } catch (error) {
+        // Игнорируем ошибку — всё равно очищаем локальные данные
+        console.warn('Не удалось отозвать токен на сервере');
+      }
+    }
+    
     this.clearAuth();
+    
     // Очистка других сторов
     this.rootStore.medicationStore.clear();
     this.rootStore.intakeStore.clear();
   }
 
+  /**
+   * Выход со всех устройств
+   */
+  async logoutAll(): Promise<boolean> {
+    this.isLoading = true;
+    this.error = null;
+
+    try {
+      await authApi.revokeAll();
+      runInAction(() => {
+        this.clearAuth();
+        this.rootStore.medicationStore.clear();
+        this.rootStore.intakeStore.clear();
+        this.isLoading = false;
+      });
+      return true;
+    } catch (err: unknown) {
+      runInAction(() => {
+        const axiosError = err as { response?: { data?: { error?: string } } };
+        this.error = axiosError.response?.data?.error || 'Ошибка выхода со всех устройств';
+        this.isLoading = false;
+      });
+      return false;
+    }
+  }
+
+  /**
+   * Ручное обновление токена (обычно не требуется — происходит автоматически)
+   */
+  async refreshToken(): Promise<boolean> {
+    const refreshToken = tokenStorage.getRefreshToken();
+    
+    if (!refreshToken) {
+      this.clearAuth();
+      return false;
+    }
+
+    try {
+      const response = await authApi.refresh({ refreshToken });
+      runInAction(() => {
+        this.saveAuthData(response.data);
+      });
+      return true;
+    } catch (err: unknown) {
+      runInAction(() => {
+        this.clearAuth();
+      });
+      return false;
+    }
+  }
+
   updateUser(user: User) {
     this.user = user;
-    localStorage.setItem('user', JSON.stringify(user));
+    tokenStorage.setUser(user);
   }
 
   clearError() {
     this.error = null;
   }
 }
-

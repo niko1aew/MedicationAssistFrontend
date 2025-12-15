@@ -13,6 +13,7 @@ export const ProfilePage: React.FC = observer(() => {
   
   const [isEditing, setIsEditing] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [showLogoutAllConfirm, setShowLogoutAllConfirm] = useState(false);
   const [name, setName] = useState(authStore.user?.name || '');
   const [email, setEmail] = useState(authStore.user?.email || '');
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
@@ -60,9 +61,20 @@ export const ProfilePage: React.FC = observer(() => {
     }
   };
 
-  const handleLogout = () => {
-    authStore.logout();
+  const handleLogout = async () => {
+    await authStore.logout();
     navigate('/login');
+  };
+
+  const handleLogoutAll = async () => {
+    const success = await authStore.logoutAll();
+    if (success) {
+      uiStore.showToast('success', 'Вы вышли со всех устройств');
+      navigate('/login');
+    } else {
+      uiStore.showToast('error', authStore.error || 'Ошибка');
+    }
+    setShowLogoutAllConfirm(false);
   };
 
   if (!user) return null;
@@ -139,9 +151,22 @@ export const ProfilePage: React.FC = observer(() => {
         <p className={styles.dangerDescription}>
           Вы будете перенаправлены на страницу входа
         </p>
-        <Button variant="danger" onClick={() => setShowLogoutConfirm(true)}>
-          Выйти
-        </Button>
+        <div className={styles.logoutActions}>
+          <Button 
+            variant="secondary" 
+            onClick={() => setShowLogoutConfirm(true)}
+            loading={authStore.isLoading}
+          >
+            Выйти
+          </Button>
+          <Button 
+            variant="danger" 
+            onClick={() => setShowLogoutAllConfirm(true)}
+            loading={authStore.isLoading}
+          >
+            Выйти со всех устройств
+          </Button>
+        </div>
       </Card>
 
       <ConfirmDialog
@@ -154,7 +179,17 @@ export const ProfilePage: React.FC = observer(() => {
         onConfirm={handleLogout}
         onCancel={() => setShowLogoutConfirm(false)}
       />
+
+      <ConfirmDialog
+        isOpen={showLogoutAllConfirm}
+        title="Выйти со всех устройств?"
+        message="Вы будете отключены от всех устройств, включая это. Потребуется повторный вход."
+        confirmText="Выйти везде"
+        cancelText="Отмена"
+        variant="danger"
+        onConfirm={handleLogoutAll}
+        onCancel={() => setShowLogoutAllConfirm(false)}
+      />
     </div>
   );
 });
-

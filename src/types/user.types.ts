@@ -24,8 +24,20 @@ export interface LoginDto {
 }
 
 export interface AuthResponse {
-  token: string;
+  token: string;                    // Access token (JWT)
+  refreshToken?: string;            // Refresh token (опционально для обратной совместимости)
+  tokenExpires?: string;            // ISO 8601 datetime - когда истекает access token
   user: User;
+}
+
+// DTO для обновления токена
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+// DTO для отзыва токена
+export interface RevokeTokenRequest {
+  refreshToken: string;
 }
 
 export interface UpdateUserDto {

@@ -124,6 +124,11 @@
   margin: 0 0 var(--spacing-md);
 }
 
+.logoutActions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
 @media (max-width: 640px) {
   .editActions {
     flex-direction: column-reverse;
@@ -136,6 +141,14 @@
   .infoRow {
     flex-direction: column;
     gap: var(--spacing-xs);
+  }
+  
+  .logoutActions {
+    flex-direction: column;
+  }
+  
+  .logoutActions button {
+    width: 100%;
   }
 }
 
