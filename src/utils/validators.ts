@@ -95,3 +95,17 @@ export const validateIntakeTime = (intakeTime: string): ValidationResult => {
   return { isValid: true };
 };
 
+export const validateReminderTime = (time: string): ValidationResult => {
+  if (!time.trim()) {
+    return { isValid: false, error: 'Введите время напоминания' };
+  }
+  
+  // Формат HH:mm (24-часовой)
+  const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+  if (!timeRegex.test(time)) {
+    return { isValid: false, error: 'Введите время в формате ЧЧ:ММ (например, 08:00)' };
+  }
+  
+  return { isValid: true };
+};
+

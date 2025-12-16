@@ -1,14 +1,15 @@
 export enum UserRole {
-  User = 'User',
-  Admin = 'Admin'
+  User = "User",
+  Admin = "Admin",
 }
 
 export interface User {
-  id: string;           // GUID
+  id: string; // GUID
   name: string;
   email: string;
   role: UserRole;
-  createdAt: string;    // ISO 8601 datetime
+  telegramUserId?: number | null; // ID пользователя в Telegram (null если не привязан)
+  createdAt: string; // ISO 8601 datetime
   updatedAt: string | null;
 }
 
@@ -24,9 +25,9 @@ export interface LoginDto {
 }
 
 export interface AuthResponse {
-  token: string;                    // Access token (JWT)
-  refreshToken?: string;            // Refresh token (опционально для обратной совместимости)
-  tokenExpires?: string;            // ISO 8601 datetime - когда истекает access token
+  token: string; // Access token (JWT)
+  refreshToken?: string; // Refresh token (опционально для обратной совместимости)
+  tokenExpires?: string; // ISO 8601 datetime - когда истекает access token
   user: User;
 }
 
@@ -44,4 +45,3 @@ export interface UpdateUserDto {
   name: string;
   email: string;
 }
-

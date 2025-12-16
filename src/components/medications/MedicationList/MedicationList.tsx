@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../../hooks/useStores';
 import { Medication } from '../../../types/medication.types';
+import { Reminder } from '../../../types/reminder.types';
 import { MedicationCard } from '../MedicationCard';
 import { EmptyState, Loader, ErrorMessage } from '../../common';
 import styles from './MedicationList.module.css';
@@ -10,6 +11,8 @@ interface MedicationListProps {
   onEdit: (medication: Medication) => void;
   onDelete: (medication: Medication) => void;
   onTakeIntake: (medication: Medication) => void;
+  onSetReminder: (medication: Medication) => void;
+  onDeleteReminder: (reminder: Reminder) => void;
   onAdd: () => void;
 }
 
@@ -17,9 +20,11 @@ export const MedicationList: React.FC<MedicationListProps> = observer(({
   onEdit,
   onDelete,
   onTakeIntake,
+  onSetReminder,
+  onDeleteReminder,
   onAdd,
 }) => {
-  const { medicationStore } = useStores();
+  const { medicationStore, reminderStore } = useStores();
 
   if (medicationStore.isLoading && medicationStore.medications.length === 0) {
     return <Loader text="Загрузка лекарств..." />;
@@ -55,15 +60,21 @@ export const MedicationList: React.FC<MedicationListProps> = observer(({
 
   return (
     <div className={styles.list}>
-      {medicationStore.sortedMedications.map((medication) => (
-        <MedicationCard
-          key={medication.id}
-          medication={medication}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onTakeIntake={onTakeIntake}
-        />
-      ))}
+      {medicationStore.sortedMedications.map((medication) => {
+        const reminder = reminderStore.getReminderForMedication(medication.id);
+        return (
+          <MedicationCard
+            key={medication.id}
+            medication={medication}
+            reminder={reminder}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onTakeIntake={onTakeIntake}
+            onSetReminder={onSetReminder}
+            onDeleteReminder={onDeleteReminder}
+          />
+        );
+      })}
     </div>
   );
 });

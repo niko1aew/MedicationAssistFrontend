@@ -1,23 +1,39 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Medication } from '../../../types/medication.types';
+import { Reminder } from '../../../types/reminder.types';
 import { Button } from '../../common';
 import styles from './MedicationCard.module.css';
 
 interface MedicationCardProps {
   medication: Medication;
+  reminder?: Reminder;
   onEdit: (medication: Medication) => void;
   onDelete: (medication: Medication) => void;
   onTakeIntake: (medication: Medication) => void;
+  onSetReminder: (medication: Medication) => void;
+  onDeleteReminder: (reminder: Reminder) => void;
 }
 
 export const MedicationCard: React.FC<MedicationCardProps> = React.memo(({
   medication,
+  reminder,
   onEdit,
   onDelete,
   onTakeIntake,
+  onSetReminder,
+  onDeleteReminder,
 }) => {
   const navigate = useNavigate();
+
+  const handleReminderClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (reminder) {
+      onDeleteReminder(reminder);
+    } else {
+      onSetReminder(medication);
+    }
+  };
 
   return (
     <div className={styles.card}>
@@ -36,6 +52,15 @@ export const MedicationCard: React.FC<MedicationCardProps> = React.memo(({
           {medication.description && (
             <p className={styles.description}>{medication.description}</p>
           )}
+          {reminder && (
+            <div className={styles.reminderInfo}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span className={styles.reminderTime}>Напоминание: {reminder.time}</span>
+            </div>
+          )}
         </div>
       </div>
       
@@ -43,7 +68,10 @@ export const MedicationCard: React.FC<MedicationCardProps> = React.memo(({
         <Button
           variant="primary"
           size="small"
-          onClick={() => onTakeIntake(medication)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onTakeIntake(medication);
+          }}
           icon={
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12"/>
@@ -53,9 +81,25 @@ export const MedicationCard: React.FC<MedicationCardProps> = React.memo(({
           Принять
         </Button>
         <Button
+          variant={reminder ? "secondary" : "ghost"}
+          size="small"
+          onClick={handleReminderClick}
+          icon={
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          }
+        >
+          {reminder ? 'Удалить напоминание' : 'Напоминание'}
+        </Button>
+        <Button
           variant="ghost"
           size="small"
-          onClick={() => onEdit(medication)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onEdit(medication);
+          }}
           icon={
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -68,7 +112,10 @@ export const MedicationCard: React.FC<MedicationCardProps> = React.memo(({
         <Button
           variant="ghost"
           size="small"
-          onClick={() => onDelete(medication)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(medication);
+          }}
           icon={
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="3 6 5 6 21 6"/>

@@ -65,6 +65,27 @@
   overflow: hidden;
 }
 
+.reminderInfo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-primary-light);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-primary-dark);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.reminderInfo svg {
+  flex-shrink: 0;
+}
+
+.reminderTime {
+  color: var(--color-primary-dark);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

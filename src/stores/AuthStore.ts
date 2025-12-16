@@ -136,6 +136,7 @@ export class AuthStore {
     // Очистка других сторов
     this.rootStore.medicationStore.clear();
     this.rootStore.intakeStore.clear();
+    this.rootStore.reminderStore.clear();
   }
 
   /**
@@ -151,6 +152,7 @@ export class AuthStore {
         this.clearAuth();
         this.rootStore.medicationStore.clear();
         this.rootStore.intakeStore.clear();
+        this.rootStore.reminderStore.clear();
         this.isLoading = false;
       });
       return true;

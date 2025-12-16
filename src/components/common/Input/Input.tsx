@@ -4,7 +4,7 @@ import styles from './Input.module.css';
 interface InputProps {
   label?: string;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'date' | 'datetime-local';
+  type?: 'text' | 'email' | 'password' | 'number' | 'date' | 'datetime-local' | 'time';
   value: string;
   onChange: (value: string) => void;
   error?: string;
