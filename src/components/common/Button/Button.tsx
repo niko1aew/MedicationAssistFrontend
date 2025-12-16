@@ -1,39 +1,41 @@
-import React from 'react';
-import styles from './Button.module.css';
+import React from "react";
+import styles from "./Button.module.css";
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
-  size?: 'small' | 'medium' | 'large';
+  variant?: "primary" | "secondary" | "danger" | "ghost";
+  size?: "small" | "medium" | "large";
   fullWidth?: boolean;
   disabled?: boolean;
   loading?: boolean;
   icon?: React.ReactNode;
-  onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: "button" | "submit" | "reset";
   className?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   children,
-  variant = 'primary',
-  size = 'medium',
+  variant = "primary",
+  size = "medium",
   fullWidth = false,
   disabled = false,
   loading = false,
   icon,
   onClick,
-  type = 'button',
-  className = '',
+  type = "button",
+  className = "",
 }) => {
   const classNames = [
     styles.button,
     styles[variant],
     styles[size],
-    fullWidth ? styles.fullWidth : '',
-    loading ? styles.loading : '',
+    fullWidth ? styles.fullWidth : "",
+    loading ? styles.loading : "",
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <button
@@ -44,8 +46,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {loading && <span className={styles.spinner} />}
       {icon && !loading && <span className={styles.icon}>{icon}</span>}
-      <span className={loading ? styles.hiddenText : ''}>{children}</span>
+      <span className={loading ? styles.hiddenText : ""}>{children}</span>
     </button>
   );
 };
-
