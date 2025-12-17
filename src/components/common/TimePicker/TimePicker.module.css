@@ -90,10 +90,7 @@
 }
 
 .dropdown {
-  position: absolute;
-  top: calc(100% + var(--spacing-xs));
-  left: 0;
-  right: 0;
+  position: fixed;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -101,6 +98,7 @@
   z-index: 1000;
   overflow: hidden;
   animation: slideDown 0.2s ease;
+  margin-top: var(--spacing-xs);
 }
 
 @keyframes slideDown {
