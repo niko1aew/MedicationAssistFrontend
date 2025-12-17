@@ -1,7 +1,7 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { usersApi } from '../api/users.api';
-import { User, UpdateUserDto } from '../types/user.types';
-import type { RootStore } from './RootStore';
+import { makeAutoObservable, runInAction } from "mobx";
+import { usersApi } from "../api/users.api";
+import { User, UpdateUserDto } from "../types/user.types";
+import type { RootStore } from "./RootStore";
 
 export class UserStore {
   rootStore: RootStore;
@@ -28,7 +28,8 @@ export class UserStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Ошибка загрузки пользователей';
+        this.error =
+          axiosError.response?.data?.error || "Ошибка загрузки пользователей";
         this.isLoading = false;
       });
     }
@@ -47,7 +48,8 @@ export class UserStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Пользователь не найден';
+        this.error =
+          axiosError.response?.data?.error || "Пользователь не найден";
         this.isLoading = false;
       });
     }
@@ -70,7 +72,34 @@ export class UserStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Ошибка обновления профиля';
+        this.error =
+          axiosError.response?.data?.error || "Ошибка обновления профиля";
+        this.isLoading = false;
+      });
+      return false;
+    }
+  }
+
+  async updateTimeZone(id: string, timeZoneId: string): Promise<boolean> {
+    this.isLoading = true;
+    this.error = null;
+
+    try {
+      const response = await usersApi.updateTimeZone(id, timeZoneId);
+      runInAction(() => {
+        // Обновляем текущего пользователя в authStore если это он
+        if (this.rootStore.authStore.user?.id === id) {
+          this.rootStore.authStore.updateUser(response.data);
+        }
+        this.isLoading = false;
+      });
+      return true;
+    } catch (err: unknown) {
+      runInAction(() => {
+        const axiosError = err as { response?: { data?: { error?: string } } };
+        this.error =
+          axiosError.response?.data?.error ||
+          "Ошибка обновления часового пояса";
         this.isLoading = false;
       });
       return false;
@@ -81,4 +110,3 @@ export class UserStore {
     this.error = null;
   }
 }
-

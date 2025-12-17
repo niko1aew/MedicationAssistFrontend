@@ -9,6 +9,8 @@ export interface User {
   email: string;
   role: UserRole;
   telegramUserId?: number | null; // ID пользователя в Telegram (null если не привязан)
+  telegramUsername?: string | null; // Username в Telegram
+  timeZoneId?: string; // IANA timezone ID (например, "Europe/Moscow") - опционально для совместимости
   createdAt: string; // ISO 8601 datetime
   updatedAt: string | null;
 }
@@ -17,6 +19,7 @@ export interface RegisterDto {
   name: string;
   email: string;
   password: string;
+  timeZoneId?: string; // IANA timezone ID (опционально)
 }
 
 export interface LoginDto {

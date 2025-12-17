@@ -25,8 +25,12 @@
   width: 48px;
   height: 48px;
   flex-shrink: 0;
-  
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, #a7f3d0 100%);
+
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-light) 0%,
+    #a7f3d0 100%
+  );
   color: var(--color-primary-dark);
   border-radius: var(--border-radius-md);
 }
@@ -41,7 +45,7 @@
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-xs);
-  
+
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -58,32 +62,79 @@
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin: 0;
-  
+
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.reminderInfo {
+.remindersContainer {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-primary-light);
+  border-radius: var(--border-radius-sm);
+}
+
+.remindersHeader {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  margin-top: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  background-color: var(--color-primary-light);
-  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-xs);
   color: var(--color-primary-dark);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
 }
 
-.reminderInfo svg {
+.remindersHeader svg {
   flex-shrink: 0;
+}
+
+.remindersTitle {
+  color: var(--color-primary-dark);
+}
+
+.remindersList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.reminderItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
 }
 
 .reminderTime {
   color: var(--color-primary-dark);
+  font-weight: var(--font-weight-medium);
+}
+
+.reminderDeleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs);
+  background: none;
+  border: none;
+  color: var(--color-error);
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.reminderDeleteBtn:hover {
+  background-color: var(--color-error-light);
+  transform: scale(1.1);
+}
+
+.reminderDeleteBtn:active {
+  transform: scale(0.95);
 }
 
 .actions {
@@ -100,13 +151,12 @@
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .actions {
     flex-direction: column;
   }
-  
+
   .actions button {
     width: 100%;
   }
 }
-

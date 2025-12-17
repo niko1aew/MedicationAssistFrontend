@@ -1,78 +1,103 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useStores } from '../../hooks/useStores';
-import { Button, Input, Card, ConfirmDialog } from '../../components/common';
-import { validateName, validateEmail } from '../../utils/validators';
-import { formatDate } from '../../utils/formatDate';
-import styles from './ProfilePage.module.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import { useStores } from "../../hooks/useStores";
+import {
+  Button,
+  Input,
+  Card,
+  ConfirmDialog,
+  Select,
+} from "../../components/common";
+import { validateName, validateEmail } from "../../utils/validators";
+import { formatDate } from "../../utils/formatDate";
+import {
+  popularTimeZones,
+  getCurrentTimeInTimeZone,
+} from "../../utils/timezone";
+import styles from "./ProfilePage.module.css";
 
 export const ProfilePage: React.FC = observer(() => {
   const navigate = useNavigate();
   const { authStore, userStore, uiStore } = useStores();
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [showLogoutAllConfirm, setShowLogoutAllConfirm] = useState(false);
-  const [name, setName] = useState(authStore.user?.name || '');
-  const [email, setEmail] = useState(authStore.user?.email || '');
+  const [name, setName] = useState(authStore.user?.name || "");
+  const [email, setEmail] = useState(authStore.user?.email || "");
+  const [timeZone, setTimeZone] = useState(
+    authStore.user?.timeZoneId || "Europe/Moscow"
+  );
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
   const user = authStore.user;
 
   const handleStartEdit = () => {
-    setName(user?.name || '');
-    setEmail(user?.email || '');
+    setName(user?.name || "");
+    setEmail(user?.email || "");
+    setTimeZone(user?.timeZoneId || "Europe/Moscow");
     setErrors({});
     setIsEditing(true);
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+    setTimeZone(user?.timeZoneId || "Europe/Moscow");
     setErrors({});
   };
 
   const validate = (): boolean => {
     const newErrors: { name?: string; email?: string } = {};
-    
+
     const nameResult = validateName(name);
     if (!nameResult.isValid) newErrors.name = nameResult.error;
-    
+
     const emailResult = validateEmail(email);
     if (!emailResult.isValid) newErrors.email = emailResult.error;
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSave = async () => {
     if (!validate() || !user) return;
-    
+
+    // Обновляем основные данные
     const success = await userStore.updateUser(user.id, {
       name: name.trim(),
       email: email.trim(),
     });
-    
+
+    // Если часовой пояс изменился, обновляем его отдельно
+    if (success && timeZone !== user.timeZoneId) {
+      const tzSuccess = await userStore.updateTimeZone(user.id, timeZone);
+      if (!tzSuccess) {
+        uiStore.showToast("error", "Ошибка обновления часового пояса");
+        return;
+      }
+    }
+
     if (success) {
-      uiStore.showToast('success', 'Профиль обновлен');
+      uiStore.showToast("success", "Профиль обновлен");
       setIsEditing(false);
     } else if (userStore.error) {
-      uiStore.showToast('error', userStore.error);
+      uiStore.showToast("error", userStore.error);
     }
   };
 
   const handleLogout = async () => {
     await authStore.logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleLogoutAll = async () => {
     const success = await authStore.logoutAll();
     if (success) {
-      uiStore.showToast('success', 'Вы вышли со всех устройств');
-      navigate('/login');
+      uiStore.showToast("success", "Вы вышли со всех устройств");
+      navigate("/login");
     } else {
-      uiStore.showToast('error', authStore.error || 'Ошибка');
+      uiStore.showToast("error", authStore.error || "Ошибка");
     }
     setShowLogoutAllConfirm(false);
   };
@@ -92,7 +117,9 @@ export const ProfilePage: React.FC = observer(() => {
           </div>
           <div className={styles.userInfo}>
             <h2 className={styles.userName}>{user.name}</h2>
-            <p className={styles.userRole}>{user.role === 'Admin' ? 'Администратор' : 'Пользователь'}</p>
+            <p className={styles.userRole}>
+              {user.role === "Admin" ? "Администратор" : "Пользователь"}
+            </p>
           </div>
         </div>
 
@@ -120,11 +147,25 @@ export const ProfilePage: React.FC = observer(() => {
               error={errors.email}
               maxLength={200}
             />
+            <Select
+              label="Часовой пояс"
+              options={popularTimeZones.map((tz) => ({
+                value: tz.id,
+                label: tz.label,
+              }))}
+              value={timeZone}
+              onChange={setTimeZone}
+              placeholder="Выберите часовой пояс"
+            />
             <div className={styles.editActions}>
               <Button variant="secondary" onClick={handleCancelEdit}>
                 Отмена
               </Button>
-              <Button variant="primary" onClick={handleSave} loading={userStore.isLoading}>
+              <Button
+                variant="primary"
+                onClick={handleSave}
+                loading={userStore.isLoading}
+              >
                 Сохранить
               </Button>
             </div>
@@ -136,8 +177,24 @@ export const ProfilePage: React.FC = observer(() => {
               <span className={styles.infoValue}>{user.email}</span>
             </div>
             <div className={styles.infoRow}>
+              <span className={styles.infoLabel}>Часовой пояс</span>
+              <span className={styles.infoValue}>
+                {user.timeZoneId ? (
+                  <>
+                    {popularTimeZones.find((tz) => tz.id === user.timeZoneId)
+                      ?.label || user.timeZoneId}{" "}
+                    ({getCurrentTimeInTimeZone(user.timeZoneId)})
+                  </>
+                ) : (
+                  "Не указан"
+                )}
+              </span>
+            </div>
+            <div className={styles.infoRow}>
               <span className={styles.infoLabel}>Дата регистрации</span>
-              <span className={styles.infoValue}>{formatDate(user.createdAt)}</span>
+              <span className={styles.infoValue}>
+                {formatDate(user.createdAt)}
+              </span>
             </div>
             <Button variant="secondary" onClick={handleStartEdit} fullWidth>
               Редактировать профиль
@@ -152,15 +209,15 @@ export const ProfilePage: React.FC = observer(() => {
           Вы будете перенаправлены на страницу входа
         </p>
         <div className={styles.logoutActions}>
-          <Button 
-            variant="secondary" 
+          <Button
+            variant="secondary"
             onClick={() => setShowLogoutConfirm(true)}
             loading={authStore.isLoading}
           >
             Выйти
           </Button>
-          <Button 
-            variant="danger" 
+          <Button
+            variant="danger"
             onClick={() => setShowLogoutAllConfirm(true)}
             loading={authStore.isLoading}
           >
