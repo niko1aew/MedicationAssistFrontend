@@ -1,6 +1,6 @@
 import React from "react";
 import { MedicationIntake } from "../../../types/intake.types";
-import { formatTime, formatRelativeDate } from "../../../utils/formatDate";
+import { formatRelativeDate } from "../../../utils/formatDate";
 import { formatTimeInTimeZone } from "../../../utils/timezone";
 import { useStores } from "../../../hooks/useStores";
 import styles from "./IntakeCard.module.css";
