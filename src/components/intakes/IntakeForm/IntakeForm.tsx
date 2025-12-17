@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { useStores } from "../../../hooks/useStores";
 import { MedicationIntake, CreateIntakeDto } from "../../../types/intake.types";
-import { Button, Input, Select, Textarea } from "../../common";
+import { Button, Select, Textarea, DateTimePicker } from "../../common";
 import { validateNotes, validateIntakeTime } from "../../../utils/validators";
 import {
   toDateTimeLocalValue,
@@ -114,15 +114,15 @@ export const IntakeForm: React.FC<IntakeFormProps> = observer(
             />
           )}
 
-          <Input
+          <DateTimePicker
             label="Время приема"
-            type="datetime-local"
             value={intakeTime}
             onChange={(value) => {
               setIntakeTime(value);
               clearFieldError("intakeTime");
             }}
             error={errors.intakeTime}
+            required
           />
 
           <Textarea

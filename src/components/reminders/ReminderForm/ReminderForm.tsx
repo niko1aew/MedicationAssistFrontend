@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CreateReminderDto } from "../../../types/reminder.types";
-import { Button, Input } from "../../common";
+import { Button, TimePicker } from "../../common";
 import { validateReminderTime } from "../../../utils/validators";
 import styles from "./ReminderForm.module.css";
 
@@ -67,9 +67,8 @@ export const ReminderForm: React.FC<ReminderFormProps> = ({
       </div>
 
       <div className={styles.fields}>
-        <Input
+        <TimePicker
           label="Время напоминания"
-          type="time"
           value={time}
           onChange={(value) => {
             setTime(value);
