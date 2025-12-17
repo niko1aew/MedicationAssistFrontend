@@ -149,3 +149,50 @@ export const getTimeZoneOffset = (timeZoneId: string): string => {
 
   return offsetPart?.value || "";
 };
+
+/**
+ * Конвертировать UTC время в локальное время пользователя для datetime-local input
+ * @param utcDateString - UTC время в ISO формате
+ * @param timeZoneId - IANA timezone ID пользователя
+ * @returns Строка в формате YYYY-MM-DDTHH:mm для datetime-local input
+ */
+export const convertUtcToLocalForInput = (
+  utcDateString: string,
+  timeZoneId: string
+): string => {
+  const safeTimeZone =
+    timeZoneId && isValidTimeZone(timeZoneId) ? timeZoneId : "Europe/Moscow";
+
+  const date = new Date(utcDateString);
+
+  // Получаем компоненты даты в часовом поясе пользователя
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: safeTimeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  const parts = formatter.formatToParts(date);
+  const year = parts.find((p) => p.type === "year")?.value || "";
+  const month = parts.find((p) => p.type === "month")?.value || "";
+  const day = parts.find((p) => p.type === "day")?.value || "";
+  const hour = parts.find((p) => p.type === "hour")?.value || "";
+  const minute = parts.find((p) => p.type === "minute")?.value || "";
+
+  return `${year}-${month}-${day}T${hour}:${minute}`;
+};
+
+/**
+ * Получить текущее время в часовом поясе пользователя для datetime-local input
+ * @param timeZoneId - IANA timezone ID пользователя
+ * @returns Строка в формате YYYY-MM-DDTHH:mm для datetime-local input
+ */
+export const getCurrentDateTimeLocalInTimeZone = (
+  timeZoneId: string
+): string => {
+  return convertUtcToLocalForInput(new Date().toISOString(), timeZoneId);
+};

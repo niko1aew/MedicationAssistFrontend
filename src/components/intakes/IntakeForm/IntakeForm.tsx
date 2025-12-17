@@ -5,10 +5,10 @@ import { MedicationIntake, CreateIntakeDto } from "../../../types/intake.types";
 import { Button, Select, Textarea, DateTimePicker } from "../../common";
 import { validateNotes, validateIntakeTime } from "../../../utils/validators";
 import {
-  toDateTimeLocalValue,
-  getCurrentDateTimeLocal,
-} from "../../../utils/formatDate";
-import { formatLocalTimeForApi } from "../../../utils/timezone";
+  formatLocalTimeForApi,
+  convertUtcToLocalForInput,
+  getCurrentDateTimeLocalInTimeZone,
+} from "../../../utils/timezone";
 import styles from "./IntakeForm.module.css";
 
 interface IntakeFormProps {
@@ -33,15 +33,16 @@ export const IntakeForm: React.FC<IntakeFormProps> = observer(
     onCancel,
     isLoading = false,
   }) => {
-    const { medicationStore } = useStores();
+    const { medicationStore, authStore } = useStores();
+    const userTimeZone = authStore.user?.timeZoneId || "Europe/Moscow";
 
     const [medicationId, setMedicationId] = useState(
       intake?.medicationId || preselectedMedicationId || ""
     );
     const [intakeTime, setIntakeTime] = useState(
       intake
-        ? toDateTimeLocalValue(intake.intakeTime)
-        : getCurrentDateTimeLocal()
+        ? convertUtcToLocalForInput(intake.intakeTime, userTimeZone)
+        : getCurrentDateTimeLocalInTimeZone(userTimeZone)
     );
     const [notes, setNotes] = useState(intake?.notes || "");
     const [errors, setErrors] = useState<FormErrors>({});
