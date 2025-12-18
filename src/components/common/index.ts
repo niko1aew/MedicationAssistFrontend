@@ -10,5 +10,6 @@ export { EmptyState } from "./EmptyState";
 export { ConfirmDialog } from "./ConfirmDialog";
 export { ErrorMessage } from "./ErrorMessage";
 export { TelegramLinkModal } from "./TelegramLinkModal";
+export { TelegramIntegration } from "./TelegramIntegration";
 export { TimePicker } from "./TimePicker";
 export { DateTimePicker } from "./DateTimePicker";

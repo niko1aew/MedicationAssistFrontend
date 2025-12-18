@@ -125,8 +125,13 @@ export class AuthStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error =
-          axiosError.response?.data?.error || "Неверный email или пароль";
+        const serverError = axiosError.response?.data?.error;
+        // Переводим английские сообщения на русский
+        if (serverError === "Invalid email or password") {
+          this.error = "Неверный email или пароль";
+        } else {
+          this.error = serverError || "Неверный email или пароль";
+        }
         this.isLoading = false;
       });
       return false;
@@ -143,7 +148,7 @@ export class AuthStore {
     if (refreshToken) {
       try {
         await authApi.revoke({ refreshToken });
-      } catch (error) {
+      } catch {
         // Игнорируем ошибку — всё равно очищаем локальные данные
         console.warn("Не удалось отозвать токен на сервере");
       }
@@ -202,7 +207,7 @@ export class AuthStore {
         this.saveAuthData(response.data);
       });
       return true;
-    } catch (err: unknown) {
+    } catch {
       runInAction(() => {
         this.clearAuth();
       });
@@ -213,6 +218,27 @@ export class AuthStore {
   updateUser(user: User) {
     this.user = user;
     tokenStorage.setUser(user);
+  }
+
+  /**
+   * Обновление данных пользователя с сервера
+   */
+  async refreshUser(): Promise<boolean> {
+    if (!this.userId) {
+      return false;
+    }
+
+    try {
+      const { usersApi } = await import("../api/users.api");
+      const response = await usersApi.getById(this.userId);
+      runInAction(() => {
+        this.updateUser(response.data);
+      });
+      return true;
+    } catch (err: unknown) {
+      console.error("Failed to refresh user data:", err);
+      return false;
+    }
   }
 
   clearError() {

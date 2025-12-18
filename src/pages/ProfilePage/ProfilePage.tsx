@@ -8,6 +8,7 @@ import {
   Card,
   ConfirmDialog,
   Select,
+  TelegramIntegration,
 } from "../../components/common";
 import { validateName, validateEmail } from "../../utils/validators";
 import { formatDate } from "../../utils/formatDate";
@@ -202,6 +203,8 @@ export const ProfilePage: React.FC = observer(() => {
           </div>
         )}
       </Card>
+
+      {user && <TelegramIntegration userId={user.id} />}
 
       <Card className={styles.dangerCard}>
         <h3 className={styles.dangerTitle}>Выход из аккаунта</h3>

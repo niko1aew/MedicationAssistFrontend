@@ -4,12 +4,7 @@ import { useStores } from "../../hooks/useStores";
 import { MedicationList, MedicationForm } from "../../components/medications";
 import { IntakeForm } from "../../components/intakes";
 import { ReminderForm } from "../../components/reminders";
-import {
-  Button,
-  Modal,
-  ConfirmDialog,
-  TelegramLinkModal,
-} from "../../components/common";
+import { Button, Modal, ConfirmDialog } from "../../components/common";
 import {
   Medication,
   CreateMedicationDto,
@@ -37,7 +32,7 @@ export const MedicationsPage: React.FC = observer(() => {
   const [deletingReminder, setDeletingReminder] = useState<Reminder | null>(
     null
   );
-  const [showTelegramLinkModal, setShowTelegramLinkModal] = useState(false);
+  const [showTelegramPrompt, setShowTelegramPrompt] = useState(false);
 
   useEffect(() => {
     medicationStore.fetchMedications();
@@ -90,7 +85,7 @@ export const MedicationsPage: React.FC = observer(() => {
   const handleReminderClick = (medication: Medication) => {
     // Проверяем, привязан ли Telegram к аккаунту
     if (!authStore.user?.telegramUserId) {
-      setShowTelegramLinkModal(true);
+      setShowTelegramPrompt(true);
       return;
     }
 
@@ -272,11 +267,29 @@ export const MedicationsPage: React.FC = observer(() => {
         isLoading={reminderStore.isLoading}
       />
 
-      {/* Telegram Link Modal */}
-      <TelegramLinkModal
-        isOpen={showTelegramLinkModal}
-        onClose={() => setShowTelegramLinkModal(false)}
-      />
+      {/* Telegram Prompt Modal */}
+      <Modal
+        isOpen={showTelegramPrompt}
+        onClose={() => setShowTelegramPrompt(false)}
+        title="Требуется привязка Telegram"
+      >
+        <div style={{ padding: "20px", textAlign: "center" }}>
+          <p style={{ marginBottom: "20px", lineHeight: "1.6" }}>
+            Для создания напоминаний необходимо привязать ваш Telegram аккаунт.
+            Это позволит боту отправлять вам уведомления о приеме лекарств.
+          </p>
+          <Button
+            variant="primary"
+            onClick={() => {
+              setShowTelegramPrompt(false);
+              window.location.href = "/profile";
+            }}
+            fullWidth
+          >
+            Перейти в профиль для привязки
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 });

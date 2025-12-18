@@ -48,3 +48,17 @@ export interface UpdateUserDto {
   name: string;
   email: string;
 }
+
+// Telegram Link Token Types
+export interface TelegramLinkTokenResponse {
+  token: string;
+  deepLink: string;
+  expiresInMinutes: number;
+}
+
+export interface TelegramLinkData {
+  token: string;
+  deepLink: string;
+  expiresInMinutes: number;
+  expiresAt: Date;
+}

@@ -15,4 +15,13 @@ export const usersApi = {
 
   updateTimeZone: (id: string, timeZoneId: string) =>
     client.put<User>(`/users/${id}/timezone`, { timeZoneId }),
+
+  // Telegram Integration
+  generateTelegramLinkToken: (userId: string) =>
+    client.post<import("../types/user.types").TelegramLinkTokenResponse>(
+      `/users/${userId}/telegram-link-token`
+    ),
+
+  unlinkTelegram: (userId: string) =>
+    client.delete(`/users/${userId}/telegram-link`),
 };
