@@ -13,3 +13,4 @@ export { TelegramLinkModal } from "./TelegramLinkModal";
 export { TelegramIntegration } from "./TelegramIntegration";
 export { TimePicker } from "./TimePicker";
 export { DateTimePicker } from "./DateTimePicker";
+export { ThemeToggle } from "./ThemeToggle";

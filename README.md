@@ -46,10 +46,11 @@ npm run preview
 cp .env.example .env
 ```
 
-| Переменная      | Описание             | По умолчанию                |
-| --------------- | -------------------- | --------------------------- |
-| `VITE_API_URL`  | URL API (build-time) | `http://localhost:5018/api` |
-| `FRONTEND_PORT` | Порт frontend        | `3000`                      |
+| Переменная                   | Описание                  | По умолчанию                |
+| ---------------------------- | ------------------------- | --------------------------- |
+| `VITE_API_URL`               | URL API (build-time)      | `http://localhost:5018/api` |
+| `VITE_TELEGRAM_BOT_USERNAME` | Имя Telegram бота (без @) | `MedicationAssistBot`       |
+| `FRONTEND_PORT`              | Порт frontend             | `3000`                      |
 
 ### Сборка и запуск
 
@@ -70,6 +71,7 @@ docker-compose down
 
 ```env
 VITE_API_URL=https://api.your-domain.com/api
+VITE_TELEGRAM_BOT_USERNAME=YourMedicationBot
 FRONTEND_PORT=80
 ```
 

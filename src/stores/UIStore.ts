@@ -1,11 +1,19 @@
-import { makeAutoObservable } from 'mobx';
-import type { RootStore } from './RootStore';
+import { makeAutoObservable } from "mobx";
+import type { RootStore } from "./RootStore";
 
-export type ModalType = 'createMedication' | 'editMedication' | 'deleteMedication' |
-                        'createIntake' | 'editIntake' | 'deleteIntake' | 
-                        'quickIntake' | 'confirm' | null;
+export type ModalType =
+  | "createMedication"
+  | "editMedication"
+  | "deleteMedication"
+  | "createIntake"
+  | "editIntake"
+  | "deleteIntake"
+  | "quickIntake"
+  | "confirm"
+  | null;
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export type ToastType = "success" | "error" | "warning" | "info";
+export type Theme = "light" | "dark";
 
 export interface Toast {
   id: string;
@@ -15,23 +23,41 @@ export interface Toast {
 
 export class UIStore {
   rootStore: RootStore;
-  
+
   // Модальные окна
   activeModal: ModalType = null;
   modalData: unknown = null;
-  
+
   // Тосты (уведомления)
   toasts: Toast[] = [];
-  
+
   // Сайдбар
   isSidebarCollapsed: boolean = false;
-  
+
   // Мобильное меню
   isMobileMenuOpen: boolean = false;
+
+  // Тема
+  theme: Theme = "light";
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
+    this.loadTheme();
+  }
+
+  // Загрузка темы из localStorage
+  private loadTheme() {
+    const savedTheme = localStorage.getItem("theme") as Theme | null;
+    if (savedTheme) {
+      this.theme = savedTheme;
+    } else {
+      // Определяем предпочтения системы
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      this.theme = prefersDark ? "dark" : "light";
+    }
   }
 
   // Модальные окна
@@ -49,7 +75,7 @@ export class UIStore {
   showToast(type: ToastType, message: string) {
     const id = Date.now().toString();
     this.toasts.push({ id, type, message });
-    
+
     // Автоматическое удаление через 5 секунд
     setTimeout(() => {
       this.removeToast(id);
@@ -57,7 +83,7 @@ export class UIStore {
   }
 
   removeToast(id: string) {
-    this.toasts = this.toasts.filter(t => t.id !== id);
+    this.toasts = this.toasts.filter((t) => t.id !== id);
   }
 
   // Сайдбар
@@ -73,5 +99,17 @@ export class UIStore {
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
   }
-}
 
+  // Тема
+  toggleTheme() {
+    this.theme = this.theme === "light" ? "dark" : "light";
+    localStorage.setItem("theme", this.theme);
+    document.documentElement.setAttribute("data-theme", this.theme);
+  }
+
+  setTheme(theme: Theme) {
+    this.theme = theme;
+    localStorage.setItem("theme", theme);
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+}

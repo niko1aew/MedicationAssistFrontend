@@ -1,5 +1,5 @@
-@import './reset.css';
-@import './variables.css';
+@import "./reset.css";
+@import "./variables.css";
 
 html {
   scroll-behavior: smooth;
@@ -56,10 +56,27 @@ a:hover {
   background: var(--color-gray-400);
 }
 
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--color-gray-800);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--color-gray-600);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-500);
+}
+
 /* Selection */
 ::selection {
   background: var(--color-primary-light);
   color: var(--color-primary-dark);
+}
+
+[data-theme="dark"] ::selection {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
 }
 
 /* Utility classes */
@@ -132,7 +149,8 @@ a:hover {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -150,7 +168,8 @@ a:hover {
 }
 
 @keyframes bounce {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(-5%);
     animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
@@ -171,4 +190,3 @@ a:hover {
 .animate-slideDown {
   animation: slideDown var(--transition-normal) forwards;
 }
-
