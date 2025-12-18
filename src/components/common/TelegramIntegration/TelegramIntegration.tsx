@@ -31,7 +31,7 @@ export const TelegramIntegration: React.FC<TelegramIntegrationProps> = observer(
       error,
     });
 
-    const isLinked = !!(user?.telegramUserId && user?.telegramUsername);
+    const isLinked = !!user?.telegramUserId;
 
     const handleGenerateLink = async () => {
       setError(null);
