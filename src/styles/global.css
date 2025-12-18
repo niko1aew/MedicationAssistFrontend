@@ -3,6 +3,7 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--bg-primary);
 }
 
 body {
@@ -11,6 +12,14 @@ body {
   color: var(--text-primary);
   background: var(--bg-gradient);
   background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Исправление для мобильных устройств */
+@media (max-width: 767px) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 #root {
