@@ -21,11 +21,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [hours, setHours] = useState("08");
   const [minutes, setMinutes] = useState("00");
-  const [dropdownPosition, setDropdownPosition] = useState({
-    top: 0,
-    left: 0,
-    width: 0,
-  });
   const containerRef = useRef<HTMLDivElement>(null);
   const hoursRef = useRef<HTMLDivElement>(null);
   const minutesRef = useRef<HTMLDivElement>(null);
@@ -39,36 +34,17 @@ export const TimePicker: React.FC<TimePickerProps> = ({
     }
   }, [value]);
 
-  // Закрываем при клике вне компонента
+  // Блокируем скролл body при открытии
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = '';
     };
-  }, [isOpen]);
-
-  // Вычисляем позицию dropdown при открытии
-  useEffect(() => {
-    if (isOpen && containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      });
-    }
   }, [isOpen]);
 
   // Скроллим к выбранному значению при открытии
@@ -169,14 +145,12 @@ export const TimePicker: React.FC<TimePickerProps> = ({
       {error && <span className={styles.errorMessage}>{error}</span>}
 
       {isOpen && (
-        <div
-          className={styles.dropdown}
-          style={{
-            top: `${dropdownPosition.top}px`,
-            left: `${dropdownPosition.left}px`,
-            width: `${dropdownPosition.width}px`,
-          }}
-        >
+        <>
+          <div 
+            className={styles.overlay}
+            onClick={() => setIsOpen(false)}
+          />
+          <div className={styles.dropdown}>
           <div className={styles.picker}>
             <div className={styles.column} ref={hoursRef}>
               <div className={styles.columnLabel}>Часы</div>
@@ -239,6 +213,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({
             </button>
           </div>
         </div>
+        </>
       )}
     </div>
   );
