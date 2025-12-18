@@ -165,12 +165,14 @@ export const TelegramIntegration: React.FC<TelegramIntegrationProps> = observer(
             </div>
 
             <div className={styles.userInfo}>
-              <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Username:</span>
-                <span className={styles.infoValue}>
-                  @{user?.telegramUsername}
-                </span>
-              </div>
+              {user?.telegramUsername && (
+                <div className={styles.infoRow}>
+                  <span className={styles.infoLabel}>Username:</span>
+                  <span className={styles.infoValue}>
+                    @{user.telegramUsername}
+                  </span>
+                </div>
+              )}
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>Telegram ID:</span>
                 <span className={styles.infoValue}>{user?.telegramUserId}</span>
