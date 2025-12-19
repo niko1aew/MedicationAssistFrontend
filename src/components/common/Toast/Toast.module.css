@@ -14,10 +14,10 @@
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-md) var(--spacing-lg);
-  
+
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-lg);
-  
+
   animation: slideInRight 0.3s ease-out;
 }
 
@@ -47,27 +47,31 @@
 
 /* Темная тема */
 [data-theme="dark"] .success {
-  background-color: rgba(34, 197, 94, 0.15);
+  background-color: rgba(34, 197, 94, 0.25);
   color: #86efac;
   border-left-color: var(--color-success);
+  backdrop-filter: blur(8px);
 }
 
 [data-theme="dark"] .error {
-  background-color: rgba(239, 68, 68, 0.15);
+  background-color: rgba(239, 68, 68, 0.25);
   color: #fca5a5;
   border-left-color: var(--color-danger);
+  backdrop-filter: blur(8px);
 }
 
 [data-theme="dark"] .warning {
-  background-color: rgba(245, 158, 11, 0.15);
+  background-color: rgba(245, 158, 11, 0.25);
   color: #fcd34d;
   border-left-color: var(--color-warning);
+  backdrop-filter: blur(8px);
 }
 
 [data-theme="dark"] .info {
-  background-color: rgba(59, 130, 246, 0.15);
+  background-color: rgba(59, 130, 246, 0.25);
   color: #93c5fd;
   border-left-color: var(--color-info);
+  backdrop-filter: blur(8px);
 }
 
 .icon {
@@ -88,13 +92,13 @@
   width: 24px;
   height: 24px;
   flex-shrink: 0;
-  
+
   background: transparent;
   border: none;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   opacity: 0.6;
-  
+
   transition: opacity var(--transition-fast);
 }
 
@@ -121,4 +125,3 @@
     max-width: none;
   }
 }
-

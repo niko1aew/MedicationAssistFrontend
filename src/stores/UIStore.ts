@@ -58,6 +58,9 @@ export class UIStore {
       ).matches;
       this.theme = prefersDark ? "dark" : "light";
     }
+    // Устанавливаем тему при загрузке
+    document.documentElement.setAttribute("data-theme", this.theme);
+    this.updateThemeColor(this.theme);
   }
 
   // Модальные окна
@@ -100,16 +103,32 @@ export class UIStore {
     this.isMobileMenuOpen = false;
   }
 
+  // Обновление meta theme-color для iOS статус-бара
+  private updateThemeColor(theme: Theme) {
+    const themeColor = theme === "dark" ? "#0f172a" : "#ffffff";
+
+    // Обновляем или создаем meta тег theme-color
+    let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+      metaThemeColor = document.createElement("meta");
+      metaThemeColor.setAttribute("name", "theme-color");
+      document.head.appendChild(metaThemeColor);
+    }
+    metaThemeColor.setAttribute("content", themeColor);
+  }
+
   // Тема
   toggleTheme() {
     this.theme = this.theme === "light" ? "dark" : "light";
     localStorage.setItem("theme", this.theme);
     document.documentElement.setAttribute("data-theme", this.theme);
+    this.updateThemeColor(this.theme);
   }
 
   setTheme(theme: Theme) {
     this.theme = theme;
     localStorage.setItem("theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
+    this.updateThemeColor(theme);
   }
 }
