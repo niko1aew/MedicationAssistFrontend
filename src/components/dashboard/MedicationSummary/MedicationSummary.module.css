@@ -1,3 +1,23 @@
+.card {
+  display: block;
+  text-decoration: none;
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card:active {
+  transform: translateY(0);
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -9,9 +29,9 @@
 @media (max-width: 767px) {
   .content {
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    text-align: left;
+    text-align: center;
     gap: var(--spacing-md);
   }
 }
@@ -51,7 +71,7 @@
 
 @media (max-width: 767px) {
   .info {
-    flex: 1;
+    flex: unset;
     align-items: flex-start;
   }
 }

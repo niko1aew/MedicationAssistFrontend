@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useStores } from "../../../hooks/useStores";
-import { Card, Skeleton } from "../../common";
+import { Skeleton } from "../../common";
 import styles from "./MedicationSummary.module.css";
 
 export const MedicationSummary: React.FC = observer(() => {
@@ -10,7 +10,7 @@ export const MedicationSummary: React.FC = observer(() => {
   const count = medicationStore.medications.length;
 
   return (
-    <Card>
+    <Link to="/medications" className={styles.card}>
       <div className={styles.content}>
         <div className={styles.icon}>
           <svg
@@ -44,10 +44,8 @@ export const MedicationSummary: React.FC = observer(() => {
             </span>
           </div>
         )}
-        <Link to="/medications" className={styles.link}>
-          Все лекарства →
-        </Link>
+        <span className={styles.link}>Все лекарства →</span>
       </div>
-    </Card>
+    </Link>
   );
 });
