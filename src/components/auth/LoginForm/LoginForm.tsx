@@ -27,7 +27,7 @@ export const LoginForm: React.FC = observer(() => {
   const [telegramLoginData, setTelegramLoginData] =
     useState<TelegramLoginInitResponse | null>(null);
   const [isPolling, setIsPolling] = useState(false);
-  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const pollingIntervalRef = useRef<number | null>(null);
 
   const validate = (): boolean => {
     const newErrors: { email?: string; password?: string } = {};
