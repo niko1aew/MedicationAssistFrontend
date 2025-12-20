@@ -27,7 +27,9 @@ export const LoginForm: React.FC = observer(() => {
   const [telegramLoginData, setTelegramLoginData] =
     useState<TelegramLoginInitResponse | null>(null);
   const [isPolling, setIsPolling] = useState(false);
-  const pollingIntervalRef = useRef<number | null>(null);
+  const pollingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
+    null
+  );
 
   const validate = (): boolean => {
     const newErrors: { email?: string; password?: string } = {};
@@ -69,12 +71,15 @@ export const LoginForm: React.FC = observer(() => {
       setTelegramLoginData(data);
       setShowTelegramModal(true);
       startPolling(data.token);
-    } catch (error: any) {
+    } catch (error) {
       console.error("Ошибка инициализации Telegram авторизации:", error);
+      const errorMessage =
+        error && typeof error === "object" && "response" in error
+          ? (error.response as { data?: { message?: string } })?.data?.message
+          : undefined;
       uiStore.showToast(
         "error",
-        error.response?.data?.message ||
-          "Не удалось инициализировать вход через Telegram"
+        errorMessage || "Не удалось инициализировать вход через Telegram"
       );
     }
   };
@@ -130,7 +135,7 @@ export const LoginForm: React.FC = observer(() => {
         }
 
         // Статус 'pending', продолжаем polling
-      } catch (error: any) {
+      } catch (error) {
         console.error("Ошибка polling:", error);
         // Продолжаем polling даже при ошибке сети
       }
