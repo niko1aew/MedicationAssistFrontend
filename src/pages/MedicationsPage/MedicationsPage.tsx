@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { useStores } from "../../hooks/useStores";
+import { useRefreshOnVisible } from "../../hooks/useRefreshOnVisible";
 import { MedicationList, MedicationForm } from "../../components/medications";
 import { IntakeForm } from "../../components/intakes";
 import { ReminderForm } from "../../components/reminders";
@@ -34,12 +35,26 @@ export const MedicationsPage: React.FC = observer(() => {
   );
   const [showTelegramPrompt, setShowTelegramPrompt] = useState(false);
 
+  // Initial data fetch
   useEffect(() => {
     medicationStore.fetchMedications();
     if (authStore.userId) {
       reminderStore.loadReminders(authStore.userId);
     }
   }, [medicationStore, reminderStore, authStore.userId]);
+
+  // Auto-refresh when tab becomes visible
+  const handleRefresh = useCallback(() => {
+    medicationStore.fetchMedications();
+    if (authStore.userId) {
+      reminderStore.loadReminders(authStore.userId);
+    }
+  }, [medicationStore, reminderStore, authStore.userId]);
+
+  useRefreshOnVisible({
+    onRefresh: handleRefresh,
+    refreshThreshold: 30000, // 30 seconds
+  });
 
   const handleCreate = async (data: CreateMedicationDto) => {
     const result = await medicationStore.createMedication(data);
