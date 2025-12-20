@@ -26,7 +26,8 @@
   align-items: center;
   gap: var(--spacing-lg);
   padding: var(--spacing-lg);
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, #a7f3d0 100%);
+  background: var(--color-primary-light);
+  border-radius: var(--border-radius-lg);
 }
 
 .avatar {
@@ -36,8 +37,12 @@
   width: 80px;
   height: 80px;
   flex-shrink: 0;
-  
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 100%
+  );
   color: white;
   font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
@@ -53,14 +58,15 @@
 .userName {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-primary-dark);
+  color: #ffffff;
   margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .userRole {
   font-size: var(--font-size-sm);
-  color: var(--color-primary-dark);
-  opacity: 0.8;
+  color: #ffffff;
+  opacity: 0.9;
   margin: var(--spacing-xs) 0 0;
 }
 
@@ -133,22 +139,21 @@
   .editActions {
     flex-direction: column-reverse;
   }
-  
+
   .editActions button {
     width: 100%;
   }
-  
+
   .infoRow {
     flex-direction: column;
     gap: var(--spacing-xs);
   }
-  
+
   .logoutActions {
     flex-direction: column;
   }
-  
+
   .logoutActions button {
     width: 100%;
   }
 }
-
