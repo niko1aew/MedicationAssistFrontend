@@ -9,7 +9,6 @@ import {
   Card,
   Modal,
   ConfirmDialog,
-  Loader,
   ErrorMessage,
   Skeleton,
 } from "../../components/common";
