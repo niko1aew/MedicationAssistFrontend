@@ -11,7 +11,7 @@ export const usePageVisibility = (debounceMs: number = 300): boolean => {
   );
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
+    let timeoutId: number | null = null;
 
     const handleVisibilityChange = () => {
       // Clear any pending timeout
