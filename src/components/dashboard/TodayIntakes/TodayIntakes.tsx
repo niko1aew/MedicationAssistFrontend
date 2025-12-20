@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react-lite";
 import { Link } from "react-router-dom";
 import { useStores } from "../../../hooks/useStores";
-import { Card } from "../../common";
+import { Card, Skeleton } from "../../common";
 import { formatTimeInTimeZone } from "../../../utils/timezone";
 import styles from "./TodayIntakes.module.css";
 
@@ -10,6 +10,18 @@ export const TodayIntakes: React.FC = observer(() => {
   const { intakeStore, authStore } = useStores();
   const todayIntakes = intakeStore.todayIntakes;
   const userTimeZone = authStore.user?.timeZoneId || "Europe/Moscow";
+
+  const renderSkeleton = () => (
+    <ul className={styles.list}>
+      {[1, 2, 3].map((i) => (
+        <li key={i} className={styles.item}>
+          <Skeleton variant="circular" width={16} height={16} />
+          <Skeleton width="40%" height={16} />
+          <Skeleton width={60} height={16} />
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <Card
@@ -23,7 +35,9 @@ export const TodayIntakes: React.FC = observer(() => {
         </Link>
       }
     >
-      {todayIntakes.length === 0 ? (
+      {intakeStore.isLoading ? (
+        renderSkeleton()
+      ) : todayIntakes.length === 0 ? (
         <p className={styles.empty}>Сегодня приемов не было</p>
       ) : (
         <ul className={styles.list}>

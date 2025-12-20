@@ -4,7 +4,7 @@ import { useStores } from "../../../hooks/useStores";
 import { Medication } from "../../../types/medication.types";
 import { Reminder } from "../../../types/reminder.types";
 import { MedicationCard } from "../MedicationCard";
-import { EmptyState, Loader, ErrorMessage } from "../../common";
+import { EmptyState, ErrorMessage, Skeleton, Card } from "../../common";
 import styles from "./MedicationList.module.css";
 
 interface MedicationListProps {
@@ -15,6 +15,37 @@ interface MedicationListProps {
   onDeleteReminder: (reminder: Reminder) => void;
   onAdd: () => void;
 }
+
+const MedicationSkeleton: React.FC = () => (
+  <Card>
+    <div style={{ padding: "1rem" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          gap: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
+        <Skeleton variant="circular" width={48} height={48} />
+        <div style={{ flex: 1 }}>
+          <Skeleton
+            width="60%"
+            height={24}
+            style={{ marginBottom: "0.5rem" }}
+          />
+          <Skeleton width="40%" height={16} />
+        </div>
+      </div>
+      <Skeleton width="80%" height={16} style={{ marginBottom: "1rem" }} />
+      <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+        <Skeleton width={100} height={36} />
+        <Skeleton width={100} height={36} />
+        <Skeleton width={100} height={36} />
+      </div>
+    </div>
+  </Card>
+);
 
 export const MedicationList: React.FC<MedicationListProps> = observer(
   ({
@@ -28,7 +59,13 @@ export const MedicationList: React.FC<MedicationListProps> = observer(
     const { medicationStore, reminderStore } = useStores();
 
     if (medicationStore.isLoading && medicationStore.medications.length === 0) {
-      return <Loader text="Загрузка лекарств..." />;
+      return (
+        <div className={styles.list}>
+          {[1, 2, 3].map((i) => (
+            <MedicationSkeleton key={i} />
+          ))}
+        </div>
+      );
     }
 
     if (medicationStore.error) {

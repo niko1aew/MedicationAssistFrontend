@@ -5,6 +5,7 @@ export { Textarea } from "./Textarea";
 export { Modal } from "./Modal";
 export { Card } from "./Card";
 export { Loader } from "./Loader";
+export { Skeleton } from "./Skeleton";
 export { ToastContainer } from "./Toast";
 export { EmptyState } from "./EmptyState";
 export { ConfirmDialog } from "./ConfirmDialog";

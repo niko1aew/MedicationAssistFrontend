@@ -12,8 +12,12 @@
   justify-content: center;
   width: 64px;
   height: 64px;
-  
-  background: linear-gradient(135deg, var(--color-primary-light) 0%, #a7f3d0 100%);
+
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-light) 0%,
+    #a7f3d0 100%
+  );
   color: var(--color-primary-dark);
   border-radius: var(--border-radius-lg);
 }
@@ -35,6 +39,10 @@
   color: var(--text-secondary);
 }
 
+.countSkeleton {
+  margin-bottom: 0.25rem;
+}
+
 .link {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
@@ -44,4 +52,3 @@
 .link:hover {
   text-decoration: underline;
 }
-

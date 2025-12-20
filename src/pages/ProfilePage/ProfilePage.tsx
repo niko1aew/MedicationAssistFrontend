@@ -9,6 +9,7 @@ import {
   ConfirmDialog,
   Select,
   TelegramIntegration,
+  Skeleton,
 } from "../../components/common";
 import { validateName, validateEmail } from "../../utils/validators";
 import { formatDate } from "../../utils/formatDate";
@@ -103,7 +104,68 @@ export const ProfilePage: React.FC = observer(() => {
     setShowLogoutAllConfirm(false);
   };
 
-  if (!user) return null;
+  if (!user) {
+    return (
+      <div className={styles.page}>
+        <header className={styles.header}>
+          <Skeleton width={120} height={32} />
+        </header>
+
+        <Card className={styles.profileCard}>
+          <div className={styles.avatarSection}>
+            <Skeleton variant="circular" width={80} height={80} />
+            <div className={styles.userInfo}>
+              <Skeleton
+                width={180}
+                height={28}
+                style={{ marginBottom: "0.5rem" }}
+              />
+              <Skeleton width={120} height={20} />
+            </div>
+          </div>
+
+          <div className={styles.infoSection}>
+            <div className={styles.infoRow}>
+              <Skeleton width={80} height={16} />
+              <Skeleton width={200} height={16} />
+            </div>
+            <div className={styles.infoRow}>
+              <Skeleton width={100} height={16} />
+              <Skeleton width={250} height={16} />
+            </div>
+            <div className={styles.infoRow}>
+              <Skeleton width={140} height={16} />
+              <Skeleton width={160} height={16} />
+            </div>
+            <Skeleton width="100%" height={40} style={{ marginTop: "1rem" }} />
+          </div>
+        </Card>
+
+        <Card>
+          <Skeleton
+            width={200}
+            height={24}
+            style={{ marginBottom: "0.5rem" }}
+          />
+          <Skeleton width="80%" height={16} style={{ marginBottom: "1rem" }} />
+          <Skeleton width={140} height={40} />
+        </Card>
+
+        <Card className={styles.dangerCard}>
+          <Skeleton
+            width={180}
+            height={24}
+            style={{ marginBottom: "0.5rem" }}
+          />
+          <Skeleton width="70%" height={16} style={{ marginBottom: "1rem" }} />
+          <div className={styles.logoutActions}>
+            <Skeleton width={100} height={40} />
+            <Skeleton width={200} height={40} />
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.page}>
