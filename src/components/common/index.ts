@@ -15,3 +15,4 @@ export { TelegramIntegration } from "./TelegramIntegration";
 export { TimePicker } from "./TimePicker";
 export { DateTimePicker } from "./DateTimePicker";
 export { ThemeToggle } from "./ThemeToggle";
+export { UpdateNotification } from "./UpdateNotification";

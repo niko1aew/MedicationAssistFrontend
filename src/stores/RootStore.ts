@@ -1,9 +1,10 @@
-import { AuthStore } from './AuthStore';
-import { UserStore } from './UserStore';
-import { MedicationStore } from './MedicationStore';
-import { IntakeStore } from './IntakeStore';
-import { UIStore } from './UIStore';
-import { ReminderStore } from './ReminderStore';
+import { AuthStore } from "./AuthStore";
+import { UserStore } from "./UserStore";
+import { MedicationStore } from "./MedicationStore";
+import { IntakeStore } from "./IntakeStore";
+import { UIStore } from "./UIStore";
+import { ReminderStore } from "./ReminderStore";
+import { VersionStore } from "./VersionStore";
 
 export class RootStore {
   authStore: AuthStore;
@@ -12,6 +13,7 @@ export class RootStore {
   intakeStore: IntakeStore;
   reminderStore: ReminderStore;
   uiStore: UIStore;
+  versionStore: VersionStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -20,8 +22,8 @@ export class RootStore {
     this.intakeStore = new IntakeStore(this);
     this.reminderStore = new ReminderStore(this);
     this.uiStore = new UIStore(this);
+    this.versionStore = new VersionStore();
   }
 }
 
 export const rootStore = new RootStore();
-
