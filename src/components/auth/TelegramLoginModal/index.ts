@@ -1,0 +1,1 @@
+export { TelegramLoginModal } from "./TelegramLoginModal";

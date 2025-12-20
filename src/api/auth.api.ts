@@ -8,6 +8,8 @@ import {
   RefreshTokenRequest,
   RevokeTokenRequest,
   TelegramWebLoginRequest,
+  TelegramLoginInitResponse,
+  TelegramLoginPollResponse,
 } from "../types/user.types";
 
 export const authApi = {
@@ -46,4 +48,17 @@ export const authApi = {
    */
   telegramWebLogin: (data: TelegramWebLoginRequest) =>
     client.post<AuthResponse>("/auth/telegram-web-login", data),
+
+  /**
+   * Инициализация входа через Telegram
+   * Генерирует токен и deep link для авторизации через бота
+   */
+  telegramLoginInit: () =>
+    client.post<TelegramLoginInitResponse>("/auth/telegram-login-init", {}),
+
+  /**
+   * Проверка статуса авторизации через Telegram (polling)
+   */
+  telegramLoginPoll: (token: string) =>
+    client.get<TelegramLoginPollResponse>(`/auth/telegram-login-poll/${token}`),
 };

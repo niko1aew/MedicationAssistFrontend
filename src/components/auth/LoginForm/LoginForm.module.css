@@ -1,7 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
 .title {
@@ -25,7 +25,7 @@
 .fields {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-sm);
 }
 
 .footer {
@@ -42,4 +42,71 @@
 
 .link:hover {
   text-decoration: underline;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: var(--spacing-sm) 0;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 42%;
+  height: 1px;
+  background-color: var(--border);
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+.divider span {
+  display: inline-block;
+  padding: 0 var(--spacing-sm);
+  background-color: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.telegramButton {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  background-color: #0088cc !important;
+  border-color: #0088cc !important;
+}
+
+.telegramButton:hover:not(:disabled) {
+  background-color: #006699 !important;
+  border-color: #006699 !important;
+}
+
+.telegramButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.telegramButtonContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.telegramIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: block;
 }

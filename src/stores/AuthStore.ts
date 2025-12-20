@@ -259,6 +259,13 @@ export class AuthStore {
   }
 
   /**
+   * Установка данных авторизации (используется для Telegram Login)
+   */
+  setAuthData(authData: AuthResponse) {
+    this.saveAuthData(authData);
+  }
+
+  /**
    * Обновление данных пользователя с сервера
    */
   async refreshUser(): Promise<boolean> {

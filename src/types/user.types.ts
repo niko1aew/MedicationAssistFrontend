@@ -67,3 +67,20 @@ export interface TelegramLinkData {
 export interface TelegramWebLoginRequest {
   token: string; // 32-character Base64 URL-safe token
 }
+
+// Telegram Login Init Response
+export interface TelegramLoginInitResponse {
+  token: string;
+  deepLink: string;
+  expiresInMinutes: number;
+  pollUrl: string;
+}
+
+// Telegram Login Poll Response
+export interface TelegramLoginPollResponse {
+  status: "pending" | "authorized" | "expired";
+  token?: string; // Access token (JWT) - только при status = 'authorized'
+  refreshToken?: string; // Refresh token - только при status = 'authorized'
+  tokenExpires?: string; // ISO 8601 datetime
+  user?: User; // Данные пользователя - только при status = 'authorized'
+}

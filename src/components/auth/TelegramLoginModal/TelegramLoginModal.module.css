@@ -1,0 +1,200 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.qrSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qrCode {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.instruction {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+  max-width: 300px;
+}
+
+.mobileSection {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.telegramButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.75rem;
+  background-color: #0088cc;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 136, 204, 0.3);
+  margin-top: 0.5rem;
+  width: auto;
+  min-width: 200px;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.telegramButton:hover {
+  background-color: #006699;
+}
+
+.showQrButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.75rem;
+  position: relative;
+  z-index: 10;
+}
+
+.showQrButton:hover {
+  background-color: var(--bg-tertiary, var(--bg-secondary));
+  border-color: var(--primary);
+}
+
+.qrCodeWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.telegramIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.instructions {
+  background: var(--bg-secondary);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+}
+
+.instructionsTitle {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.instructionsList {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.instructionsList li {
+  margin-bottom: 0.5rem;
+}
+
+.instructionsList li:last-child {
+  margin-bottom: 0;
+}
+
+.waiting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.waitingText {
+  margin: 0;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.expiration {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--bg-secondary);
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    gap: 1rem;
+  }
+
+  .qrCode svg {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .instructions {
+    padding: 0.75rem 1rem;
+  }
+
+  .instructionsTitle {
+    font-size: 0.9rem;
+  }
+
+  .instructionsList {
+    font-size: 0.9rem;
+  }
+}
