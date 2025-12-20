@@ -2,6 +2,7 @@
 
 import { makeAutoObservable, runInAction } from "mobx";
 import { authApi } from "../api/auth.api";
+import { usersApi } from "../api/users.api";
 import { User, RegisterDto, LoginDto, AuthResponse } from "../types/user.types";
 import { tokenStorage } from "../utils/tokenStorage";
 import type { RootStore } from "./RootStore";
@@ -274,7 +275,6 @@ export class AuthStore {
     }
 
     try {
-      const { usersApi } = await import("../api/users.api");
       const response = await usersApi.getById(this.userId);
       runInAction(() => {
         this.updateUser(response.data);
