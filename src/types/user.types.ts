@@ -62,3 +62,8 @@ export interface TelegramLinkData {
   expiresInMinutes: number;
   expiresAt: Date;
 }
+
+// Telegram Web Login Types
+export interface TelegramWebLoginRequest {
+  token: string; // 32-character Base64 URL-safe token
+}

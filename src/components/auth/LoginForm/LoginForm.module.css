@@ -14,11 +14,12 @@
 
 .error {
   padding: var(--spacing-md);
-  background-color: var(--color-danger-light);
-  color: #991b1b;
+  background-color: var(--color-danger);
+  color: var(--color-white);
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-sm);
   text-align: center;
+  font-weight: var(--font-weight-semibold);
 }
 
 .fields {
@@ -42,4 +43,3 @@
 .link:hover {
   text-decoration: underline;
 }
-

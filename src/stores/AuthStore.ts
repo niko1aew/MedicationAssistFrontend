@@ -139,6 +139,44 @@ export class AuthStore {
   }
 
   /**
+   * Вход через Telegram с одноразовым токеном
+   */
+  async telegramWebLogin(token: string): Promise<boolean> {
+    this.isLoading = true;
+    this.error = null;
+
+    try {
+      const response = await authApi.telegramWebLogin({ token });
+      runInAction(() => {
+        this.saveAuthData(response.data);
+        this.isLoading = false;
+      });
+      return true;
+    } catch (err: unknown) {
+      runInAction(() => {
+        const axiosError = err as { response?: { data?: { error?: string } } };
+        const serverError = axiosError.response?.data?.error;
+
+        // Переводим ошибки на русский
+        if (
+          serverError === "Invalid or expired token" ||
+          serverError === "Недействительный или истекший токен"
+        ) {
+          this.error =
+            "Ссылка истекла или уже была использована. Получите новую ссылку из Telegram бота.";
+        } else if (serverError === "Token is required") {
+          this.error =
+            "Токен не найден. Пожалуйста, попробуйте снова из Telegram бота.";
+        } else {
+          this.error = serverError || "Ошибка входа через Telegram";
+        }
+        this.isLoading = false;
+      });
+      return false;
+    }
+  }
+
+  /**
    * Выход из системы (текущее устройство)
    */
   async logout(): Promise<void> {
