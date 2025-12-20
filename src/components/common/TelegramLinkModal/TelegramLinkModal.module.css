@@ -171,6 +171,22 @@
   margin-bottom: 4px;
 }
 
+/* Check Status Section */
+.checkStatusSection {
+  padding: 16px;
+  background: var(--color-background-secondary, #f9fafb);
+  border-radius: 8px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  text-align: center;
+  margin-top: 8px;
+}
+
+.checkStatusText {
+  font-size: 14px;
+  color: var(--color-text-secondary, #6b7280);
+  margin-bottom: 12px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .qrSection {

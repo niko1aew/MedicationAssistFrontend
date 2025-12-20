@@ -24,13 +24,6 @@ export const TelegramIntegration: React.FC<TelegramIntegrationProps> = observer(
     const [isUnlinking, setIsUnlinking] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    console.log("TelegramIntegration render:", {
-      showLinkModal,
-      modalIsLoading,
-      linkData,
-      error,
-    });
-
     const isLinked = !!user?.telegramUserId;
 
     const handleGenerateLink = async () => {
@@ -91,6 +84,10 @@ export const TelegramIntegration: React.FC<TelegramIntegrationProps> = observer(
           error.response?.data?.error ||
           error.message ||
           "Ошибка отвязки Telegram";
+        console.error(
+          "TelegramIntegration: Error unlinking Telegram:",
+          errorMessage
+        );
         uiStore.showToast("error", errorMessage);
       } finally {
         setIsUnlinking(false);
@@ -99,7 +96,7 @@ export const TelegramIntegration: React.FC<TelegramIntegrationProps> = observer(
 
     const startPolling = () => {
       let attempts = 0;
-      const maxAttempts = 15; // 30 секунд (15 * 2 секунды)
+      const maxAttempts = 60; // 120 секунд (60 * 2 секунды)
       const interval = 2000; // 2 секунды
 
       const pollInterval = setInterval(async () => {
@@ -137,6 +134,20 @@ export const TelegramIntegration: React.FC<TelegramIntegrationProps> = observer(
       setLinkData(null);
       setError(null);
       setModalIsLoading(false);
+    };
+
+    const handleCheckStatus = async () => {
+      await authStore.refreshUser();
+
+      if (authStore.user?.telegramUserId) {
+        setShowLinkModal(false);
+        uiStore.showToast("success", "Telegram успешно привязан к аккаунту!");
+      } else {
+        uiStore.showToast(
+          "info",
+          "Telegram еще не привязан. Пожалуйста, завершите привязку в боте."
+        );
+      }
     };
 
     return (
@@ -246,6 +257,7 @@ export const TelegramIntegration: React.FC<TelegramIntegrationProps> = observer(
           isLoading={modalIsLoading}
           error={error}
           onGenerate={handleGenerateLink}
+          onCheckStatus={handleCheckStatus}
         />
 
         <ConfirmDialog

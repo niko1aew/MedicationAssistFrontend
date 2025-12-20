@@ -13,6 +13,7 @@ interface TelegramLinkModalProps {
   isLoading?: boolean;
   error?: string | null;
   onGenerate?: () => void;
+  onCheckStatus?: () => Promise<void>;
 }
 
 export const TelegramLinkModal: React.FC<TelegramLinkModalProps> = ({
@@ -22,10 +23,12 @@ export const TelegramLinkModal: React.FC<TelegramLinkModalProps> = ({
   isLoading = false,
   error = null,
   onGenerate,
+  onCheckStatus,
 }) => {
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [isExpired, setIsExpired] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isChecking, setIsChecking] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -73,6 +76,17 @@ export const TelegramLinkModal: React.FC<TelegramLinkModalProps> = ({
         // Можно добавить уведомление об успехе
       } catch (err) {
         console.error("Failed to copy:", err);
+      }
+    }
+  };
+
+  const handleCheckStatus = async () => {
+    if (onCheckStatus) {
+      setIsChecking(true);
+      try {
+        await onCheckStatus();
+      } finally {
+        setIsChecking(false);
       }
     }
   };
@@ -208,12 +222,27 @@ export const TelegramLinkModal: React.FC<TelegramLinkModalProps> = ({
             <li>Вы увидите главное меню</li>
           </ol>
         </div>
+
+        {onCheckStatus && (
+          <div className={styles.checkStatusSection}>
+            <p className={styles.checkStatusText}>
+              Уже привязали аккаунт в Telegram?
+            </p>
+            <Button
+              variant="secondary"
+              onClick={handleCheckStatus}
+              loading={isChecking}
+              fullWidth
+            >
+              Проверить статус
+            </Button>
+          </div>
+        )}
       </>
     );
   };
 
   const content = renderContent();
-  console.log("Modal content to render:", content);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Привязать Telegram аккаунт">
