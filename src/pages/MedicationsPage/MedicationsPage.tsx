@@ -13,11 +13,18 @@ import {
 } from "../../types/medication.types";
 import { CreateIntakeDto } from "../../types/intake.types";
 import { Reminder, CreateReminderDto } from "../../types/reminder.types";
+import { OnboardingStep } from "../../types/user.types";
 import styles from "./MedicationsPage.module.css";
 
 export const MedicationsPage: React.FC = observer(() => {
-  const { medicationStore, intakeStore, reminderStore, uiStore, authStore } =
-    useStores();
+  const {
+    medicationStore,
+    intakeStore,
+    reminderStore,
+    uiStore,
+    authStore,
+    onboardingStore,
+  } = useStores();
 
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingMedication, setEditingMedication] = useState<Medication | null>(
@@ -61,6 +68,15 @@ export const MedicationsPage: React.FC = observer(() => {
     if (result) {
       uiStore.showToast("success", "Лекарство добавлено");
       setShowCreateModal(false);
+
+      // Онбординг: если пользователь на шаге добавления лекарства
+      if (
+        onboardingStore.isActive &&
+        onboardingStore.currentStep === OnboardingStep.AddMedication
+      ) {
+        onboardingStore.setCreatedMedication(result.id, result.name);
+        onboardingStore.nextStep();
+      }
     }
   };
 
@@ -129,6 +145,14 @@ export const MedicationsPage: React.FC = observer(() => {
     if (success) {
       uiStore.showToast("success", "Напоминание установлено");
       setReminderMedication(null);
+
+      // Онбординг: если пользователь на шаге добавления напоминания
+      if (
+        onboardingStore.isActive &&
+        onboardingStore.currentStep === OnboardingStep.AddReminder
+      ) {
+        onboardingStore.nextStep();
+      }
     } else {
       uiStore.showToast(
         "error",

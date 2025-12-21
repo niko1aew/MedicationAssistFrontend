@@ -157,3 +157,22 @@
     width: 100%;
   }
 }
+
+/* Onboarding Section */
+.onboardingCard {
+  border: 1px solid var(--color-primary-light);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-xs);
+}
+
+.sectionDescription {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-md);
+  line-height: 1.5;
+}

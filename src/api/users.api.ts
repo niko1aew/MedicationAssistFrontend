@@ -1,5 +1,5 @@
 import client from "./client";
-import { User, UpdateUserDto } from "../types/user.types";
+import { User, UpdateUserDto, UpdateOnboardingDto } from "../types/user.types";
 
 export const usersApi = {
   getAll: () => client.get<User[]>("/users"),
@@ -15,6 +15,10 @@ export const usersApi = {
 
   updateTimeZone: (id: string, timeZoneId: string) =>
     client.put<User>(`/users/${id}/timezone`, { timeZoneId }),
+
+  // Onboarding
+  updateOnboarding: (id: string, data: UpdateOnboardingDto) =>
+    client.put<User>(`/users/${id}/onboarding`, data),
 
   // Telegram Integration
   generateTelegramLinkToken: (userId: string) =>

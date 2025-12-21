@@ -1,0 +1,228 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: var(--z-modal-backdrop);
+
+  animation: fadeIn var(--transition-fast) ease-out;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 480px;
+  max-height: calc(100vh - 48px);
+
+  background-color: var(--bg-primary);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-modal);
+
+  animation: slideUp var(--transition-normal) ease-out;
+  overflow: hidden;
+}
+
+/* Прогресс-бар */
+.progressBar {
+  display: flex;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--bg-secondary);
+}
+
+.progressStep {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--border-color);
+  transition: background-color var(--transition-normal);
+}
+
+.progressStep.active {
+  background-color: var(--color-primary);
+}
+
+.progressStep.completed {
+  background-color: var(--color-success);
+}
+
+/* Контент */
+.content {
+  flex: 1;
+  padding: var(--spacing-xl);
+  overflow-y: auto;
+  text-align: center;
+}
+
+/* Иконка шага */
+.stepIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--spacing-lg);
+
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-light) 0%,
+    var(--color-primary) 100%
+  );
+  border-radius: 50%;
+  color: white;
+}
+
+.stepIcon svg {
+  width: 40px;
+  height: 40px;
+}
+
+/* Заголовок и описание */
+.stepTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.stepDescription {
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--spacing-lg);
+}
+
+/* Подсказки */
+.tipsList {
+  text-align: left;
+  padding: var(--spacing-md);
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.tipItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.tipItem:last-child {
+  margin-bottom: 0;
+}
+
+.tipIcon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Футер с кнопками */
+.footer {
+  display: flex;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.footer button {
+  flex: 1;
+}
+
+/* Кнопка пропуска */
+.skipButton {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+.skipButton:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+/* Иконка для завершения */
+.successIcon {
+  background: linear-gradient(
+    135deg,
+    var(--color-success-light, #d4edda) 0%,
+    var(--color-success) 100%
+  );
+}
+
+/* Telegram шаг */
+.telegramStep {
+  padding: var(--spacing-md);
+  background-color: #e3f2fd;
+  border-radius: var(--border-radius-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.telegramStep.dark {
+  background-color: rgba(33, 150, 243, 0.1);
+}
+
+.telegramNote {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin-top: var(--spacing-sm);
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 480px) {
+  .modal {
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .content {
+    padding: var(--spacing-lg);
+  }
+
+  .stepIcon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .stepIcon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .stepTitle {
+    font-size: var(--font-size-xl);
+  }
+}

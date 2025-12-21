@@ -21,7 +21,7 @@ import styles from "./ProfilePage.module.css";
 
 export const ProfilePage: React.FC = observer(() => {
   const navigate = useNavigate();
-  const { authStore, userStore, uiStore } = useStores();
+  const { authStore, userStore, uiStore, onboardingStore } = useStores();
 
   const [isEditing, setIsEditing] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -267,6 +267,33 @@ export const ProfilePage: React.FC = observer(() => {
       </Card>
 
       {user && <TelegramIntegration userId={user.id} />}
+
+      {/* Онбординг секция */}
+      <Card className={styles.onboardingCard}>
+        <h3 className={styles.sectionTitle}>Обучение</h3>
+        <p className={styles.sectionDescription}>
+          {user.isOnboardingCompleted
+            ? "Вы уже прошли обучение. Хотите пройти его заново?"
+            : "Пройдите короткое обучение, чтобы узнать о возможностях приложения."}
+        </p>
+        <Button
+          variant="secondary"
+          onClick={async () => {
+            if (user.isOnboardingCompleted) {
+              await onboardingStore.resetOnboarding();
+              navigate("/");
+            } else {
+              onboardingStore.startOnboarding();
+              navigate("/");
+            }
+          }}
+          loading={onboardingStore.isLoading}
+        >
+          {user.isOnboardingCompleted
+            ? "Пройти обучение заново"
+            : "Начать обучение"}
+        </Button>
+      </Card>
 
       <Card className={styles.dangerCard}>
         <h3 className={styles.dangerTitle}>Выход из аккаунта</h3>

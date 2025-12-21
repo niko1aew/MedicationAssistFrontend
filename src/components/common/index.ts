@@ -16,3 +16,4 @@ export { TimePicker } from "./TimePicker";
 export { DateTimePicker } from "./DateTimePicker";
 export { ThemeToggle } from "./ThemeToggle";
 export { UpdateNotification } from "./UpdateNotification";
+export { OnboardingModal } from "./OnboardingModal";

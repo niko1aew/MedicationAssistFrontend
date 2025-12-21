@@ -5,6 +5,7 @@ import { IntakeStore } from "./IntakeStore";
 import { UIStore } from "./UIStore";
 import { ReminderStore } from "./ReminderStore";
 import { VersionStore } from "./VersionStore";
+import { OnboardingStore } from "./OnboardingStore";
 
 export class RootStore {
   authStore: AuthStore;
@@ -14,6 +15,7 @@ export class RootStore {
   reminderStore: ReminderStore;
   uiStore: UIStore;
   versionStore: VersionStore;
+  onboardingStore: OnboardingStore;
 
   constructor() {
     this.authStore = new AuthStore(this);
@@ -23,6 +25,7 @@ export class RootStore {
     this.reminderStore = new ReminderStore(this);
     this.uiStore = new UIStore(this);
     this.versionStore = new VersionStore();
+    this.onboardingStore = new OnboardingStore(this);
   }
 }
 

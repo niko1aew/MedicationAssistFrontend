@@ -11,8 +11,25 @@ export interface User {
   telegramUserId?: number | null; // ID пользователя в Telegram (null если не привязан)
   telegramUsername?: string | null; // Username в Telegram
   timeZoneId?: string; // IANA timezone ID (например, "Europe/Moscow") - опционально для совместимости
+  isOnboardingCompleted?: boolean; // Пройден ли онбординг
+  onboardingStep?: number | null; // Текущий шаг онбординга (null если не начат или завершен)
   createdAt: string; // ISO 8601 datetime
   updatedAt: string | null;
+}
+
+// Онбординг шаги
+export enum OnboardingStep {
+  Welcome = 0,
+  NavigateToMedications = 1,
+  AddMedication = 2,
+  AddReminder = 3,
+  Completed = 4,
+}
+
+// DTO для обновления онбординга
+export interface UpdateOnboardingDto {
+  isCompleted?: boolean;
+  step?: number;
 }
 
 export interface RegisterDto {

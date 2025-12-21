@@ -6,4 +6,5 @@ export { IntakeStore } from "./IntakeStore";
 export { ReminderStore } from "./ReminderStore";
 export { UIStore } from "./UIStore";
 export { VersionStore } from "./VersionStore";
+export { OnboardingStore } from "./OnboardingStore";
 export type { ModalType, ToastType, Toast } from "./UIStore";
