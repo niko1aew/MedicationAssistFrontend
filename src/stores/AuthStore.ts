@@ -178,6 +178,52 @@ export class AuthStore {
   }
 
   /**
+   * Вход через Telegram Mini App (WebApp)
+   * Используется когда приложение открыто внутри Telegram
+   */
+  async telegramWebAppLogin(initData: string): Promise<boolean> {
+    this.isLoading = true;
+    this.error = null;
+
+    try {
+      const response = await authApi.telegramWebApp({ initData });
+      runInAction(() => {
+        this.saveAuthData(response.data);
+        this.isLoading = false;
+      });
+      return true;
+    } catch (err: unknown) {
+      runInAction(() => {
+        const axiosError = err as { response?: { data?: { error?: string } } };
+        const serverError = axiosError.response?.data?.error;
+
+        // Переводим ошибки на русский
+        if (serverError === "Invalid signature") {
+          this.error =
+            "Ошибка безопасности. Попробуйте перезапустить приложение.";
+        } else if (serverError === "Data expired") {
+          this.error =
+            "Сессия истекла. Пожалуйста, закройте и откройте приложение заново.";
+        } else if (
+          serverError ===
+            "Пользователь не привязан к Telegram. Сначала зарегистрируйтесь через бота." ||
+          serverError === "User not linked to Telegram"
+        ) {
+          this.error =
+            "Аккаунт не найден. Нажмите /start в боте для регистрации.";
+        } else if (serverError === "Invalid initData") {
+          this.error =
+            "Неверные данные авторизации. Попробуйте перезапустить приложение.";
+        } else {
+          this.error = serverError || "Ошибка входа через Telegram";
+        }
+        this.isLoading = false;
+      });
+      return false;
+    }
+  }
+
+  /**
    * Выход из системы (текущее устройство)
    */
   async logout(): Promise<void> {

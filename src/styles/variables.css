@@ -103,6 +103,8 @@
   --z-popover: 600;
   --z-tooltip: 700;
   --z-toast: 800;
+  --z-onboarding-backdrop: 900;
+  --z-onboarding: 1000;
 
   /* Анимации */
   --transition-fast: 150ms ease;
@@ -185,3 +187,35 @@
    --breakpoint-lg: 1024px;
    --breakpoint-xl: 1280px;
 */
+
+/* Telegram Mini App CSS переменные - будут установлены JavaScript */
+:root {
+  --tg-bg-color: var(--bg-primary);
+  --tg-text-color: var(--text-primary);
+  --tg-hint-color: var(--text-muted);
+  --tg-link-color: var(--color-primary);
+  --tg-button-color: var(--color-primary);
+  --tg-button-text-color: var(--color-white);
+  --tg-secondary-bg-color: var(--bg-secondary);
+  --tg-header-bg-color: var(--bg-primary);
+  --tg-accent-text-color: var(--color-primary);
+  --tg-section-bg-color: var(--bg-secondary);
+  --tg-destructive-text-color: var(--color-danger);
+}
+
+/* При использовании темы Telegram применяем её цвета */
+[data-telegram-theme="dark"] {
+  --bg-primary: var(--tg-bg-color, #0f172a);
+  --bg-secondary: var(--tg-secondary-bg-color, #1e293b);
+  --text-primary: var(--tg-text-color, #f8fafc);
+  --text-muted: var(--tg-hint-color, #94a3b8);
+  --color-primary: var(--tg-button-color, #34d399);
+}
+
+[data-telegram-theme="light"] {
+  --bg-primary: var(--tg-bg-color, #ffffff);
+  --bg-secondary: var(--tg-secondary-bg-color, #f8fafc);
+  --text-primary: var(--tg-text-color, #0f172a);
+  --text-muted: var(--tg-hint-color, #94a3b8);
+  --color-primary: var(--tg-button-color, #10b981);
+}

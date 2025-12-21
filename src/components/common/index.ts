@@ -17,3 +17,4 @@ export { DateTimePicker } from "./DateTimePicker";
 export { ThemeToggle } from "./ThemeToggle";
 export { UpdateNotification } from "./UpdateNotification";
 export { OnboardingModal } from "./OnboardingModal";
+export { TelegramWebAppInit } from "./TelegramWebAppInit";

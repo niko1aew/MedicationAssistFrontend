@@ -101,3 +101,8 @@ export interface TelegramLoginPollResponse {
   tokenExpires?: string; // ISO 8601 datetime
   user?: User; // Данные пользователя - только при status = 'authorized'
 }
+
+// Telegram Web App (Mini App) Request
+export interface TelegramWebAppRequest {
+  initData: string; // Закодированная строка initData от Telegram WebApp
+}

@@ -1,0 +1,71 @@
+/* components/common/TelegramWebAppInit/TelegramWebAppInit.module.css */
+
+.initContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-4);
+  background-color: var(--color-background);
+}
+
+.initText {
+  margin-top: var(--space-4);
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--space-4);
+  text-align: center;
+  background-color: var(--color-background);
+}
+
+.errorIcon {
+  font-size: 48px;
+  margin-bottom: var(--space-4);
+}
+
+.errorTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.errorMessage {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.retryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.retryButton:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.retryButton:active {
+  transform: scale(0.98);
+}

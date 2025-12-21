@@ -5,6 +5,7 @@ import { StoreContext } from "./hooks/useStores";
 import { rootStore } from "./stores/RootStore";
 import { ToastContainer } from "./components/common/Toast";
 import { UpdateNotification } from "./components/common/UpdateNotification";
+import { TelegramWebAppInit } from "./components/common/TelegramWebAppInit";
 import { useVersionCheck } from "./hooks/useVersionCheck";
 import "./styles/global.css";
 
@@ -25,9 +26,11 @@ function App() {
 
   return (
     <StoreContext.Provider value={rootStore}>
-      <RouterProvider router={router} />
-      <ToastContainer />
-      <UpdateNotification />
+      <TelegramWebAppInit>
+        <RouterProvider router={router} />
+        <ToastContainer />
+        <UpdateNotification />
+      </TelegramWebAppInit>
     </StoreContext.Provider>
   );
 }

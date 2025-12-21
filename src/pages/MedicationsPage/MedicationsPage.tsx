@@ -179,6 +179,17 @@ export const MedicationsPage: React.FC = observer(() => {
     }
   };
 
+  // Проверяем, открыта ли какая-либо модалка (для скрытия FAB)
+  const isAnyModalOpen =
+    showCreateModal ||
+    !!editingMedication ||
+    !!deletingMedication ||
+    !!intakeMedication ||
+    !!reminderMedication ||
+    !!deletingReminder ||
+    showTelegramPrompt ||
+    onboardingStore.isModalVisible;
+
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -210,28 +221,30 @@ export const MedicationsPage: React.FC = observer(() => {
         </Button>
       </header>
 
-      {/* Mobile add button */}
-      <button
-        className={styles.mobileAddButton}
-        onClick={() => setShowCreateModal(true)}
-        aria-label="Добавить лекарство"
-      >
-        <span className={styles.mobileAddIcon}>
-          <svg
-            width="28"
-            height="28"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="12" y1="5" x2="12" y2="19" />
-            <line x1="5" y1="12" x2="19" y2="12" />
-          </svg>
-        </span>
-      </button>
+      {/* Mobile add button - скрываем при открытых модалках */}
+      {!isAnyModalOpen && (
+        <button
+          className={styles.mobileAddButton}
+          onClick={() => setShowCreateModal(true)}
+          aria-label="Добавить лекарство"
+        >
+          <span className={styles.mobileAddIcon}>
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+          </span>
+        </button>
+      )}
 
       <MedicationList
         onEdit={setEditingMedication}

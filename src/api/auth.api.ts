@@ -10,6 +10,7 @@ import {
   TelegramWebLoginRequest,
   TelegramLoginInitResponse,
   TelegramLoginPollResponse,
+  TelegramWebAppRequest,
 } from "../types/user.types";
 
 export const authApi = {
@@ -61,4 +62,11 @@ export const authApi = {
    */
   telegramLoginPoll: (token: string) =>
     client.get<TelegramLoginPollResponse>(`/auth/telegram-login-poll/${token}`),
+
+  /**
+   * Авторизация через Telegram Mini App (WebApp)
+   * Используется когда приложение открыто внутри Telegram
+   */
+  telegramWebApp: (data: TelegramWebAppRequest) =>
+    client.post<AuthResponse>("/auth/telegram-webapp", data),
 };
