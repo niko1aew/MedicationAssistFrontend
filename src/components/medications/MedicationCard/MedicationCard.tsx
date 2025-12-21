@@ -56,59 +56,148 @@ export const MedicationCard: React.FC<MedicationCardProps> = React.memo(
             {medication.description && (
               <p className={styles.description}>{medication.description}</p>
             )}
-            {reminders.length > 0 && (
-              <div className={styles.remindersContainer}>
-                <div className={styles.remindersHeader}>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                  <span className={styles.remindersTitle}>
-                    Напоминания ({reminders.length}):
-                  </span>
-                </div>
-                <div className={styles.remindersList}>
-                  {reminders.map((reminder) => (
-                    <div key={reminder.id} className={styles.reminderItem}>
-                      <span className={styles.reminderTime}>
-                        {reminder.time}
-                      </span>
-                      <button
-                        className={styles.reminderDeleteBtn}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDeleteReminder(reminder);
-                        }}
-                        title="Удалить напоминание"
-                      >
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <line x1="18" y1="6" x2="6" y2="18" />
-                          <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
-                </div>
+          </div>
+          {reminders.length > 0 && (
+            <div className={styles.remindersCompact}>
+              <div className={styles.remindersHeader}>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+                <span className={styles.remindersTitle}>
+                  Напоминания ({reminders.length}):
+                </span>
               </div>
-            )}
+              <div className={styles.remindersList}>
+                {reminders.map((reminder) => (
+                  <div key={reminder.id} className={styles.reminderItem}>
+                    <span className={styles.reminderTime}>{reminder.time}</span>
+                    <button
+                      className={styles.reminderDeleteBtn}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteReminder(reminder);
+                      }}
+                      title="Удалить напоминание"
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Mobile action icons */}
+          <div className={styles.mobileActions}>
+            <button
+              className={`${styles.mobileActionBtn} ${styles.mobileActionPrimary}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onTakeIntake(medication);
+              }}
+              title="Принять"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </button>
+            <button
+              className={styles.mobileActionBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSetReminder(medication);
+              }}
+              title="Добавить напоминание"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </button>
+            <button
+              className={styles.mobileActionBtn}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit(medication);
+              }}
+              title="Изменить"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+            </button>
+            <button
+              className={`${styles.mobileActionBtn} ${styles.mobileActionDanger}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete(medication);
+              }}
+              title="Удалить"
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+            </button>
           </div>
         </div>
 
