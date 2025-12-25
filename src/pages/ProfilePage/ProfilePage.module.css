@@ -58,15 +58,14 @@
 .userName {
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .userRole {
   font-size: var(--font-size-sm);
-  color: #ffffff;
-  opacity: 0.9;
+  color: var(--text-primary);
+  opacity: 0.75;
   margin: var(--spacing-xs) 0 0;
 }
 

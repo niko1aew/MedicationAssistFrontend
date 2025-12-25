@@ -216,33 +216,47 @@ export const MedicationDetailPage: React.FC = observer(() => {
         </div>
 
         <div className={styles.actions}>
-          <Button
-            variant="primary"
-            size="large"
-            fullWidth
-            onClick={() => setShowIntakeModal(true)}
-            icon={
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
-            }
-          >
-            Принял лекарство
-          </Button>
-          <div className={styles.secondaryActions}>
-            <Button variant="secondary" onClick={() => setShowEditModal(true)}>
+          <div className={styles.actionsHeader}>
+            <p className={styles.actionsTitle}>Управление лекарством</p>
+            <p className={styles.actionsHint}>
+              Быстро отметьте прием или измените карточку
+            </p>
+          </div>
+
+          <div className={styles.actionButtons}>
+            <Button
+              variant="primary"
+              size="large"
+              onClick={() => setShowIntakeModal(true)}
+              icon={
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              }
+            >
+              Принять
+            </Button>
+            <Button
+              variant="secondary"
+              size="large"
+              onClick={() => setShowEditModal(true)}
+            >
               Редактировать
             </Button>
-            <Button variant="danger" onClick={() => setShowDeleteConfirm(true)}>
+            <Button
+              variant="danger"
+              size="large"
+              onClick={() => setShowDeleteConfirm(true)}
+            >
               Удалить
             </Button>
           </div>
