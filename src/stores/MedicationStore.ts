@@ -1,7 +1,11 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { medicationsApi } from '../api/medications.api';
-import { Medication, CreateMedicationDto, UpdateMedicationDto } from '../types/medication.types';
-import type { RootStore } from './RootStore';
+import { makeAutoObservable, runInAction } from "mobx";
+import { medicationsApi } from "../api/medications.api";
+import {
+  Medication,
+  CreateMedicationDto,
+  UpdateMedicationDto,
+} from "../types/medication.types";
+import type { RootStore } from "./RootStore";
 
 export class MedicationStore {
   rootStore: RootStore;
@@ -9,7 +13,7 @@ export class MedicationStore {
   selectedMedication: Medication | null = null;
   isLoading: boolean = false;
   error: string | null = null;
-  searchQuery: string = '';
+  searchQuery: string = "";
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -29,8 +33,8 @@ export class MedicationStore {
     if (!query) {
       return this.sortedMedications;
     }
-    return this.sortedMedications.filter(med =>
-      med.name.toLowerCase().includes(query)
+    return this.sortedMedications.filter((med) =>
+      med.name.toLowerCase().startsWith(query)
     );
   }
 
@@ -40,7 +44,7 @@ export class MedicationStore {
 
   async fetchMedications(): Promise<void> {
     if (!this.userId) return;
-    
+
     this.isLoading = true;
     this.error = null;
 
@@ -53,7 +57,8 @@ export class MedicationStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Ошибка загрузки лекарств';
+        this.error =
+          axiosError.response?.data?.error || "Ошибка загрузки лекарств";
         this.isLoading = false;
       });
     }
@@ -61,7 +66,7 @@ export class MedicationStore {
 
   async fetchMedicationById(id: string): Promise<void> {
     if (!this.userId) return;
-    
+
     this.isLoading = true;
     this.error = null;
 
@@ -74,15 +79,17 @@ export class MedicationStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Лекарство не найдено';
+        this.error = axiosError.response?.data?.error || "Лекарство не найдено";
         this.isLoading = false;
       });
     }
   }
 
-  async createMedication(data: CreateMedicationDto): Promise<Medication | null> {
+  async createMedication(
+    data: CreateMedicationDto
+  ): Promise<Medication | null> {
     if (!this.userId) return null;
-    
+
     this.isLoading = true;
     this.error = null;
 
@@ -96,23 +103,27 @@ export class MedicationStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Ошибка создания лекарства';
+        this.error =
+          axiosError.response?.data?.error || "Ошибка создания лекарства";
         this.isLoading = false;
       });
       return null;
     }
   }
 
-  async updateMedication(id: string, data: UpdateMedicationDto): Promise<boolean> {
+  async updateMedication(
+    id: string,
+    data: UpdateMedicationDto
+  ): Promise<boolean> {
     if (!this.userId) return false;
-    
+
     this.isLoading = true;
     this.error = null;
 
     try {
       const response = await medicationsApi.update(this.userId, id, data);
       runInAction(() => {
-        const index = this.medications.findIndex(m => m.id === id);
+        const index = this.medications.findIndex((m) => m.id === id);
         if (index !== -1) {
           this.medications[index] = response.data;
         }
@@ -125,7 +136,8 @@ export class MedicationStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Ошибка обновления лекарства';
+        this.error =
+          axiosError.response?.data?.error || "Ошибка обновления лекарства";
         this.isLoading = false;
       });
       return false;
@@ -134,14 +146,14 @@ export class MedicationStore {
 
   async deleteMedication(id: string): Promise<boolean> {
     if (!this.userId) return false;
-    
+
     this.isLoading = true;
     this.error = null;
 
     try {
       await medicationsApi.delete(this.userId, id);
       runInAction(() => {
-        this.medications = this.medications.filter(m => m.id !== id);
+        this.medications = this.medications.filter((m) => m.id !== id);
         if (this.selectedMedication?.id === id) {
           this.selectedMedication = null;
         }
@@ -151,7 +163,8 @@ export class MedicationStore {
     } catch (err: unknown) {
       runInAction(() => {
         const axiosError = err as { response?: { data?: { error?: string } } };
-        this.error = axiosError.response?.data?.error || 'Ошибка удаления лекарства';
+        this.error =
+          axiosError.response?.data?.error || "Ошибка удаления лекарства";
         this.isLoading = false;
       });
       return false;
@@ -159,18 +172,17 @@ export class MedicationStore {
   }
 
   getMedicationById(id: string): Medication | undefined {
-    return this.medications.find(m => m.id === id);
+    return this.medications.find((m) => m.id === id);
   }
 
   clear() {
     this.medications = [];
     this.selectedMedication = null;
     this.error = null;
-    this.searchQuery = '';
+    this.searchQuery = "";
   }
 
   clearError() {
     this.error = null;
   }
 }
-

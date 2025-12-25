@@ -62,13 +62,28 @@ export const MedicationList: React.FC<MedicationListProps> = observer(
       medicationStore.setSearchQuery(value);
     };
 
+    const handleClearSearch = () => {
+      medicationStore.setSearchQuery("");
+    };
+
     const searchInput = (
       <div className={styles.searchContainer}>
         <Input
           placeholder="Поиск по названию..."
           value={medicationStore.searchQuery}
           onChange={handleSearchChange}
+          className={styles.searchInput}
         />
+        {medicationStore.searchQuery && (
+          <button
+            type="button"
+            className={styles.clearButton}
+            onClick={handleClearSearch}
+            aria-label="Очистить поиск"
+          >
+            ✕
+          </button>
+        )}
       </div>
     );
 
@@ -118,7 +133,10 @@ export const MedicationList: React.FC<MedicationListProps> = observer(
       );
     }
 
-    if (medicationStore.searchQuery && medicationStore.filteredMedications.length === 0) {
+    if (
+      medicationStore.searchQuery &&
+      medicationStore.filteredMedications.length === 0
+    ) {
       return (
         <>
           {searchInput}

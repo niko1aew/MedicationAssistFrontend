@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   background-color: var(--bg-primary);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-md);
@@ -157,12 +158,70 @@
   gap: var(--spacing-xs);
 }
 
-.mobileActionBtn {
+.topRightActions {
+  display: none;
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  gap: var(--spacing-xs);
+  z-index: 2;
+}
+
+.mainInfo {
+  display: flex;
+  gap: var(--spacing-md);
+  flex: 1;
+  min-width: 0;
+}
+
+.mobileRemindersSection {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: var(--spacing-xs);
+  margin-left: auto;
+  padding-left: var(--spacing-sm);
+  align-content: start;
+}
+
+.mobileReminderItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: var(--color-primary-light);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-primary-dark);
+}
+
+.mobileReminderItem svg {
+  flex-shrink: 0;
+}
+
+.mobileReminderDeleteBtn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  padding: 2px;
+  margin-left: 2px;
+  background: none;
+  border: none;
+  color: var(--color-error);
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.mobileReminderDeleteBtn:hover {
+  background-color: var(--color-error-light);
+}
+
+.topActionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
   padding: 0;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -170,6 +229,42 @@
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-fast);
+}
+
+.topActionBtn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.topActionBtn:active {
+  transform: scale(0.95);
+}
+
+.topActionDanger {
+  color: var(--color-error);
+}
+
+.topActionDanger:hover {
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+}
+
+.mobileActionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--spacing-sm);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
 }
 
 .mobileActionBtn:hover {
@@ -204,9 +299,19 @@
 
 @media (max-width: 640px) {
   .content {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     padding-bottom: calc(var(--spacing-lg) + 44px);
+    padding-top: calc(var(--spacing-md) + 40px);
+  }
+
+  .mainInfo {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .mobileRemindersSection {
+    grid-template-columns: 1fr;
   }
 
   .actions {
@@ -215,5 +320,13 @@
 
   .mobileActions {
     display: flex;
+  }
+
+  .topRightActions {
+    display: flex;
+  }
+
+  .remindersCompact {
+    display: none;
   }
 }

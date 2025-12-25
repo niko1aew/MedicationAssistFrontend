@@ -13,7 +13,8 @@ import { CreateIntakeDto } from "../../types/intake.types";
 import styles from "./DashboardPage.module.css";
 
 export const DashboardPage: React.FC = observer(() => {
-  const { authStore, medicationStore, intakeStore, uiStore } = useStores();
+  const { authStore, medicationStore, intakeStore, uiStore, onboardingStore } =
+    useStores();
   const [showQuickIntake, setShowQuickIntake] = useState(false);
   const [selectedMedication, setSelectedMedication] = useState("");
   const [isQuickMode, setIsQuickMode] = useState(true);
@@ -78,9 +79,11 @@ export const DashboardPage: React.FC = observer(() => {
         </p>
       </header>
 
-      <section className={styles.quickAction}>
-        <QuickIntakeButton onClick={() => setShowQuickIntake(true)} />
-      </section>
+      {!(onboardingStore.isActive && onboardingStore.isModalVisible) && (
+        <section className={styles.quickAction}>
+          <QuickIntakeButton onClick={() => setShowQuickIntake(true)} />
+        </section>
+      )}
 
       <section className={styles.grid}>
         <div className={styles.mainColumn}>

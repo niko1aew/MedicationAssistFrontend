@@ -1,10 +1,17 @@
-import React from 'react';
-import styles from './Input.module.css';
+import React from "react";
+import styles from "./Input.module.css";
 
 interface InputProps {
   label?: string;
   placeholder?: string;
-  type?: 'text' | 'email' | 'password' | 'number' | 'date' | 'datetime-local' | 'time';
+  type?:
+    | "text"
+    | "email"
+    | "password"
+    | "number"
+    | "date"
+    | "datetime-local"
+    | "time";
   value: string;
   onChange: (value: string) => void;
   error?: string;
@@ -14,12 +21,13 @@ interface InputProps {
   id?: string;
   name?: string;
   autoComplete?: string;
+  className?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
   label,
   placeholder,
-  type = 'text',
+  type = "text",
   value,
   onChange,
   error,
@@ -29,11 +37,12 @@ export const Input: React.FC<InputProps> = ({
   id,
   name,
   autoComplete,
+  className,
 }) => {
-  const inputId = id || name || label?.toLowerCase().replace(/\s+/g, '-');
-  
+  const inputId = id || name || label?.toLowerCase().replace(/\s+/g, "-");
+
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${className || ""}`}>
       {label && (
         <label htmlFor={inputId} className={styles.label}>
           {label}
@@ -44,7 +53,7 @@ export const Input: React.FC<InputProps> = ({
         id={inputId}
         name={name}
         type={type}
-        className={`${styles.input} ${error ? styles.inputError : ''}`}
+        className={`${styles.input} ${error ? styles.inputError : ""}`}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -64,4 +73,3 @@ export const Input: React.FC<InputProps> = ({
     </div>
   );
 };
-

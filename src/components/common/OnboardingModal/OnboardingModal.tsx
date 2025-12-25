@@ -176,17 +176,22 @@ export const OnboardingModal: React.FC = observer(() => {
   const navigate = useNavigate();
   const { onboardingStore, authStore } = useStores();
 
-  const { isActive, isModalVisible, currentStep, isLoading } = onboardingStore;
+  const { currentStep, isLoading } = onboardingStore;
+  const shouldShow = onboardingStore.isActive && onboardingStore.isModalVisible;
 
   // Автоматический запуск онбординга при первом рендере
   useEffect(() => {
-    if (onboardingStore.shouldShowOnboarding && !isActive) {
+    if (onboardingStore.shouldShowOnboarding && !onboardingStore.isActive) {
       onboardingStore.startOnboarding();
     }
-  }, [onboardingStore, isActive]);
+  }, [
+    onboardingStore,
+    onboardingStore.shouldShowOnboarding,
+    onboardingStore.isActive,
+  ]);
 
   // Если модалка не должна показываться, не рендерим
-  if (!isActive || !isModalVisible) return null;
+  if (!shouldShow) return null;
 
   const stepConfig = STEPS_CONFIG[currentStep];
 

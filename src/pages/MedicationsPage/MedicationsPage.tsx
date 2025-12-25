@@ -188,7 +188,7 @@ export const MedicationsPage: React.FC = observer(() => {
     !!reminderMedication ||
     !!deletingReminder ||
     showTelegramPrompt ||
-    onboardingStore.isModalVisible;
+    (onboardingStore.isActive && onboardingStore.isModalVisible);
 
   return (
     <div className={styles.page}>
