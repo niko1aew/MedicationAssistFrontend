@@ -4,7 +4,7 @@ import { useStores } from "../../../hooks/useStores";
 import { Medication } from "../../../types/medication.types";
 import { Reminder } from "../../../types/reminder.types";
 import { MedicationCard } from "../MedicationCard";
-import { EmptyState, ErrorMessage, Skeleton, Card } from "../../common";
+import { EmptyState, ErrorMessage, Skeleton, Card, Input } from "../../common";
 import styles from "./MedicationList.module.css";
 
 interface MedicationListProps {
@@ -58,6 +58,20 @@ export const MedicationList: React.FC<MedicationListProps> = observer(
   }) => {
     const { medicationStore, reminderStore } = useStores();
 
+    const handleSearchChange = (value: string) => {
+      medicationStore.setSearchQuery(value);
+    };
+
+    const searchInput = (
+      <div className={styles.searchContainer}>
+        <Input
+          placeholder="Поиск по названию..."
+          value={medicationStore.searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
+    );
+
     if (medicationStore.isLoading && medicationStore.medications.length === 0) {
       return (
         <div className={styles.list}>
@@ -104,26 +118,41 @@ export const MedicationList: React.FC<MedicationListProps> = observer(
       );
     }
 
+    if (medicationStore.searchQuery && medicationStore.filteredMedications.length === 0) {
+      return (
+        <>
+          {searchInput}
+          <EmptyState
+            title="Ничего не найдено"
+            description={`По запросу "${medicationStore.searchQuery}" лекарства не найдены`}
+          />
+        </>
+      );
+    }
+
     return (
-      <div className={styles.list}>
-        {medicationStore.sortedMedications.map((medication) => {
-          const reminders = reminderStore.getRemindersForMedication(
-            medication.id
-          );
-          return (
-            <MedicationCard
-              key={medication.id}
-              medication={medication}
-              reminders={reminders}
-              onEdit={onEdit}
-              onDelete={onDelete}
-              onTakeIntake={onTakeIntake}
-              onSetReminder={onSetReminder}
-              onDeleteReminder={onDeleteReminder}
-            />
-          );
-        })}
-      </div>
+      <>
+        {searchInput}
+        <div className={styles.list}>
+          {medicationStore.filteredMedications.map((medication) => {
+            const reminders = reminderStore.getRemindersForMedication(
+              medication.id
+            );
+            return (
+              <MedicationCard
+                key={medication.id}
+                medication={medication}
+                reminders={reminders}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onTakeIntake={onTakeIntake}
+                onSetReminder={onSetReminder}
+                onDeleteReminder={onDeleteReminder}
+              />
+            );
+          })}
+        </div>
+      </>
     );
   }
 );

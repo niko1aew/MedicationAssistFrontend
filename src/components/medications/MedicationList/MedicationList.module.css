@@ -1,3 +1,7 @@
+.searchContainer {
+  margin-bottom: var(--spacing-md);
+}
+
 .list {
   display: grid;
   gap: var(--spacing-md);

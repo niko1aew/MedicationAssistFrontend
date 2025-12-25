@@ -9,6 +9,7 @@ export class MedicationStore {
   selectedMedication: Medication | null = null;
   isLoading: boolean = false;
   error: string | null = null;
+  searchQuery: string = '';
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -21,6 +22,20 @@ export class MedicationStore {
 
   get sortedMedications(): Medication[] {
     return [...this.medications].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  get filteredMedications(): Medication[] {
+    const query = this.searchQuery.toLowerCase().trim();
+    if (!query) {
+      return this.sortedMedications;
+    }
+    return this.sortedMedications.filter(med =>
+      med.name.toLowerCase().includes(query)
+    );
+  }
+
+  setSearchQuery(query: string) {
+    this.searchQuery = query;
   }
 
   async fetchMedications(): Promise<void> {
@@ -151,6 +166,7 @@ export class MedicationStore {
     this.medications = [];
     this.selectedMedication = null;
     this.error = null;
+    this.searchQuery = '';
   }
 
   clearError() {
