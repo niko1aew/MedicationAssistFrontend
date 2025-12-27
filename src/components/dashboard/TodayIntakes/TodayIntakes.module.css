@@ -61,3 +61,13 @@
   flex-shrink: 0;
 }
 
+.skeletonIcon,
+.skeletonText,
+.skeletonTime {
+  margin: 0;
+}
+
+.skeletonText {
+  flex: 1;
+}
+

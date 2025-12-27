@@ -15,9 +15,22 @@ export const TodayIntakes: React.FC = observer(() => {
     <ul className={styles.list}>
       {[1, 2, 3].map((i) => (
         <li key={i} className={styles.item}>
-          <Skeleton variant="circular" width={16} height={16} />
-          <Skeleton width="40%" height={16} />
-          <Skeleton width={60} height={16} />
+          <Skeleton
+            variant="circular"
+            width={28}
+            height={28}
+            className={styles.skeletonIcon}
+          />
+          <Skeleton
+            width="65%"
+            height={16}
+            className={styles.skeletonText}
+          />
+          <Skeleton
+            width={72}
+            height={14}
+            className={styles.skeletonTime}
+          />
         </li>
       ))}
     </ul>
